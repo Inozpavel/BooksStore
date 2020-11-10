@@ -10,16 +10,19 @@ form.addEventListener("submit", (event) => {
 function checkInputs() {
     let validState = checkPasswordsInputs();
     for (let input of inputs) {
-        if (checkIsNotEmpty(input) === false) {
-            setErrorForElement(input, "is-invalid", "is-valid", "Значение не может быть пустым!")
+        if (checkIsEmpty(input)) {
+            updateElementClasses(input, "is-invalid", "is-valid", "Значение не может быть пустым!")
             validState = false;
+        }
+        else if (input.type != "password") {
+            updateElementClasses(input, "is-valid", "is-invalid", "")
         }
     }
     return validState;
 }
 
-function checkIsNotEmpty(element) {
-    return element.value.trim() != "";
+function checkIsEmpty(element) {
+    return element.value.trim() === "";
 }
 
 function checkElementIsPasswordInput(element) {
@@ -31,13 +34,13 @@ function checkPasswordsInputs() {
 
         if (checkPasswords() === false) {
             for (let element of passwordInputs) {
-                setErrorForElement(element, "is-invalid", "is-valid", "Пароли не совпадают!")
+                updateElementClasses(element, "is-invalid", "is-valid", "Пароли не совпадают!")
             }
             return false;
         }
         else {
             for (let element of passwordInputs) {
-                setErrorForElement(element, "is-valid", "is-invalid", "")
+                updateElementClasses(element, "is-valid", "is-invalid", "")
             }
             return true;
         }
@@ -54,7 +57,7 @@ function checkPasswords() {
     return true;
 }
 
-function setErrorForElement(element, classToAdd = "", classToRemove = "", errorText = "") {
+function updateElementClasses(element, classToAdd = "", classToRemove = "", errorText = "") {
     element.classList.add(classToAdd)
     element.classList.remove(classToRemove);
 
