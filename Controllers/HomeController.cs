@@ -14,5 +14,16 @@ namespace BooksStore.Controllers
 
         [HttpGet]
         public ViewResult Login() => View();
+
+        [HttpGet]
+        public ViewResult Registration() => View();
+
+        [HttpPost]
+        public IActionResult Registration(User user)
+        {
+            if (ModelState.IsValid == false)
+                return View();
+            return RedirectToAction("Index");
+        }
     }
 }
