@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar bg-dark navbar-dark">
+            <a asp-action="Index">
+                <h1 class="navbar-brand">BooksStore</h1>
+            </a>
+            <div class="row">
+                <form class="form-inline">
+                    <input class="form-control" placeholder="Найти книгу">
+                    <button class="btn btn-outline-success ml-2" type="submit">Поиск</button>
+                </form>
+                <a asp-action="Login" class="btn btn-primary ml-2 mr-2">Войти</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer class="container-fluid py-5 bg-dark mt-5">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-3">
+                <h5 class="text-light">Каталог</h5>
+                <span class="text-light">© BooksStore</span>
+                <p class="text-light">2020 - 2020</p>
+            </div>
+            <div class="col-3">
+                <h5 class="text-light">Мы в социальных сетях</h5>
+                <a href="#">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <img height="30" width="30" src="~/images/vk.svg">
+                        </div>
+                        <label class="text-light ml-2 mt-0">Вконтакте</label>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="input-group">
+                        <img height="30" width="30" src="~/images/youtube.svg">
+                        <label class="text-light ml-2">Youtube</label>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="input-group">
+                        <img height="30" width="30" src="~/images/telegram.svg">
+                        <label class="text-light ml-2 mt-1">Telegram</label>
+                    </div>
+                </a>
+            </div>
+            <div class="col-3">
+                <h5 class="text-light">Каталог</h5>
+                <a class="nav-link">О нас</a>
+                <a class="nav-link">Доставка и оплата</a>
+                <a class="nav-link">Контакты</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
