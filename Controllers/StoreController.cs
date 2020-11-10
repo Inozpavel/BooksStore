@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BooksStore.Controllers
 {
-    public class HomeController : Controller
+    public class StoreController : Controller
     {
         [HttpGet]
         public ViewResult Index() => View();
