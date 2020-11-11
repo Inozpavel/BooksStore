@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BooksStore.Models;
+﻿using BooksStore.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BooksStore.Controllers
 {
     public class StoreController : Controller
     {
+        private readonly StoreContext _context;
+
+        public StoreController(StoreContext context) => _context = context;
+
         [HttpGet]
         public ViewResult Index() => View();
 
@@ -25,5 +25,6 @@ namespace BooksStore.Controllers
                 return View();
             return RedirectToAction("Index");
         }
+
     }
 }
