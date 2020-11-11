@@ -41,6 +41,7 @@ namespace BooksStore
             {
                 routes.MapRoute("default", "{controller=Store}/{action=Index}/{id?}");
             });
+            SeedData.EnsureBooksAdded(app);
         }
     }
 }
