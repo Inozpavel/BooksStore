@@ -1,0 +1,50 @@
+﻿@model IEnumerable<BooksStore.Models.Book>
+@{ 
+    ViewBag.Title = "Список всех книг";
+}
+
+<div class="text-center">
+    <h1>Список всех книг</h1>
+</div>
+@if (TempData["deletedBookMessage"] != null)
+{
+<div class="alert alert-success">@TempData["deletedBookMessage"]</div>
+}
+@if (Model.Any() == false)
+{
+    <div class="text-center mt-5">
+        <h3>Книги закончились</h3>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Категория</th>
+                @if (Model.Any(x => x.Description != null))
+                {
+                    <th>Описание</th>
+                }
+                <th>Управление</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Name</td>
+                    <td>@book.Author.Name</td>
+                    <td>@book.Category.Name</td>
+                    @if (Model.Any(x => x.Description != null))
+                    {
+                        <td>@book.Description</td>
+                    }
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,5 +1,7 @@
 ﻿using BooksStore.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BooksStore.Controllers
 {
@@ -26,5 +28,11 @@ namespace BooksStore.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public ViewResult AllBooks()
+        {
+            var t = _context.Books.ToArray();
+            return View(_context.Books.Include(x => x.Author).Include(x => x.Category).ToList());
+        }
     }
 }
