@@ -5,7 +5,8 @@ namespace BooksStore.Models
 {
     public class Author
     {
-        [Key]
+        public int Id { get; set; }
+
         [DisplayName("Имя автора")]
         [Required(ErrorMessage = "У автора должно быть имя!")]
         public string Name { get; set; }

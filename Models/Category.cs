@@ -5,12 +5,13 @@ namespace BooksStore.Models
 {
     public class Category
     {
-        [Key]
-        [DisplayName("Категория")]
-        [Required(ErrorMessage ="У категории должно быть название!")]
+        public int Id { get; set; }
+
+        [DisplayName("Жанр")]
+        [Required(ErrorMessage = "У жанра должно быть название!")]
         public string Name { get; set; }
 
-        [DisplayName("Описание категории")]
+        [DisplayName("Описание жанра")]
         public string Description { get; set; }
 
         public Category() : this("", null)
