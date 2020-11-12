@@ -1,30 +1,62 @@
-﻿@model BooksStore.Models.Book
-@{
-    ViewBag.Title = "Изменение книги";
-}
+﻿@model BooksStore.ViewModels.BookInputViewModel
+
 <form method="post">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" type="text" value="@Model?.Name"/>
-        <span class="text-danger small" asp-validation-for="Name"></span>
+    <input asp-for="@Model.Book.Id" type="hidden" value="@Model.Book.Id"/>
+    <div class="form-group ml-2 mr-2">
+        <label class="ml-1" asp-for="@Model.Book.Name"></label>
+        <input asp-for="@Model.Book.Name" class="form-control" type="text" value="@Model.Book.Name" autofocus/>
+        <span class="text-danger small" asp-validation-for="@Model.Book.Name"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Author.Name"></label>
-        <input asp-for="Author.Name" class="form-control" type="text" value="@Model?.Author.Name"/>
-        <span class="text-danger small" asp-validation-for="Author.Name"></span>
+    <div class="form-group ml-2 mr-2">
+        <label class="ml-1" asp-for="@Model.Book.Author.Name"></label>
+        <select class="form-control" asp-for="@Model.Book.Author.Name">
+            @if (string.IsNullOrEmpty(Model.Book.Author.Name))
+            {
+                <option value="" selected>Выберите автора</option>
+            }
+            @foreach (BooksStore.Models.Author author in Model.Authors)
+            {
+                @if (author.Name != Model.Book.Author.Name)
+                {
+                    <option value="@author.Name">@author.Name</option>
+                }
+                else
+                {
+                    <option value="@author.Name" selected>@author.Name</option>
+                }
+            }
+        </select>
+        <span class="text-danger small" asp-validation-for="@Model.Book.Author.Name"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Category.Name"></label>
-        <input asp-for="Category.Name" class="form-control" type="text" value="@Model?.Category.Name"/>
-        <span class="text-danger small" asp-validation-for="Category.Name"></span>
+   
+    <div class="form-group ml-2 mr-2">
+        <label class="ml-1" asp-for="@Model.Book.Category.Name"></label>
+        <select class="form-control" asp-for="@Model.Book.Category.Name">
+            @if (string.IsNullOrEmpty(Model.Book.Category.Name))
+            {
+                <option value="" selected>Выберите жанр</option>
+            }
+            @foreach (BooksStore.Models.Category category in Model.Categories)
+            {
+                @if (category.Name != Model.Book.Category.Name)
+                {
+                    <option value="@category.Name">@category.Name</option>
+                }
+                else
+                {
+                    <option value="@category.Name" selected>@category.Name</option>
+                }
+            }
+        </select>
+        <span class="text-danger small" asp-validation-for="@Model.Book.Category.Name"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control" type="text" value="@Model?.Description"/>
+    <div class="form-group ml-2 mr-2">
+        <label class="ml-1" asp-for="@Model.Book.Description"></label>
+        <input asp-for="@Model.Book.Description" class="form-control" type="text" value="@Model.Book.Description"/>
     </div>
 
-    <div class="row mt-3">
-        <button class="btn ml-3 btn-lg btn-primary"type="submit">@ViewBag.MainButtonText</button>
+    <div class="row mt-3 ml-2 mr-2">
+        <button class="btn ml-3 btn-lg btn-primary"type="submit">@ViewBag.ButtonText</button>
         <a class="btn ml-3 btn-lg btn-outline-dark" asp-action="AllBooks">Отменить</a>
     </div>
 </form>

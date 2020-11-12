@@ -11,7 +11,7 @@ namespace BooksStore
     public class Startup
     {
         public IConfiguration Configuration { get; private set; }
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,6 +22,7 @@ namespace BooksStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(services => services.EnableEndpointRouting = false);
+            services.AddTransient<IStoreRepository, EFStoreRepository>();
             string connectionString = Configuration["ConnectionString"];
             services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
         }

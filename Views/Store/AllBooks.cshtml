@@ -3,12 +3,17 @@
     ViewBag.Title = "Список всех книг";
 }
 
+<div class="btn-group ml-3 mt-3" role="group" aria-label="Basic example">
+    <a class="btn btn-warning active" asp-action="AllBooks">Книги</a>
+    <a class="btn btn-secondary" asp-action="AllAuthors">Авторы</a>
+    <a class="btn btn-secondary" asp-action="AllCategories">Жанры</a>
+</div>
 <div class="text-center">
     <h1>Список всех книг</h1>
 </div>
 @if (TempData["deletedBookMessage"] != null)
 {
-<div class="alert alert-success">@TempData["deletedBookMessage"]</div>
+    <div class="alert alert-success">@TempData["deletedBookMessage"]</div>
 }
 @if (Model.Any() == false)
 {
@@ -18,12 +23,13 @@
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
             <tr>
+                <th>Id</th>
                 <th>Название</th>
                 <th>Автор</th>
-                <th>Категория</th>
+                <th>Жанр</th>
                 @if (Model.Any(x => x.Description != null))
                 {
                     <th>Описание</th>
@@ -35,6 +41,7 @@ else
             @foreach (var book in Model)
             {
                 <tr>
+                    <td>@book.Id</td>
                     <td>@book.Name</td>
                     <td>@book.Author.Name</td>
                     <td>@book.Category.Name</td>

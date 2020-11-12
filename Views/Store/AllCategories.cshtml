@@ -1,0 +1,61 @@
+﻿@model IEnumerable<BooksStore.Models.Category>
+@{
+    ViewBag.Title = "Список всех жанров";
+}
+
+<div class="btn-group ml-3 mt-3" role="group" aria-label="Basic example">
+    <a class="btn btn-secondary" asp-action="AllBooks">Книги</a>
+    <a class="btn btn-secondary" asp-action="AllAuthors">Авторы</a>
+    <a class="btn btn-warning active" asp-action="AllCategories">Жанры</a>
+</div>
+<div class="text-center">
+    <h1>Список всех жанров</h1>
+</div>
+@if (TempData["deletedCategoryMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["deletedCategoryMessage"]</div>
+}
+@if (Model.Any() == false)
+{
+    <div class="text-center mt-5">
+        <h3>Жанров нет</h3>
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th class="text-center">Название</th>
+                @if (Model.Any(category => category.Description != null))
+                {
+                    <th>Описание</th>
+                }
+                <th class="text-center mr-5">Управление</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.Id</td>
+                    <td class="text-center">@category.Name</td>
+                    @if (Model.Any(category => category.Description != null))
+                    {
+                        <td>@category.Description</td>
+                    }
+                    <td>
+                        <div class="row float-right">
+                            <a class="btn btn-primary ml-3" asp-action="ChangeCategory" asp-route-categoryId="@category.Id">Изменить</a>
+                            <a class="btn btn-danger ml-3 mr-5" type="submit" asp-action="DeleteCategory" asp-route-categoryId="@category.Id">Удалить</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class="text-center mt-5">
+    <a class="btn-primary btn-lg" asp-action="AddCategory">Добавить жанр</a>
+</div>
