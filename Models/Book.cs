@@ -7,12 +7,16 @@ namespace BooksStore.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="У книги должно быть название!")]
+        [Required(ErrorMessage = "У книги должно быть название!")]
         [DisplayName("Название книги")]
         public string Name { get; set; }
-        
+
+        public int AuthorId { get; set; }
+
         public Author Author { get; set; }
-        
+
+        public int CategoryId { get; set; }
+
         public Category Category { get; set; }
 
         [DisplayName("Описание книги")]
