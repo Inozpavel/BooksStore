@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BooksStore.Models
 {
@@ -22,7 +19,7 @@ namespace BooksStore.Models
         public string SecondName { get; set; }
 
         [Required(ErrorMessage = "Значение не может быть пустым!")]
-        [EmailAddress(ErrorMessage ="Значение долно быть в формате адреса почты!")]
+        [EmailAddress(ErrorMessage = "Значение долно быть в формате адреса почты!")]
         [DisplayName("Почта")]
         public string Email { get; set; }
 
