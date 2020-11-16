@@ -22,8 +22,8 @@ namespace BooksStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(services => services.EnableEndpointRouting = false);
-            services.AddTransient<IStoreRepository, EFStoreRepository>();
-            string connectionString = Configuration["ConnectionString"];
+            services.AddSingleton<IStoreRepository, EFStoreRepository>();
+            string connectionString = Configuration["LocalDbConnectionString"];
             services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
         }
 
