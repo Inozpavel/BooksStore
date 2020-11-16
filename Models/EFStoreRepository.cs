@@ -8,13 +8,11 @@ namespace BooksStore.Models
     {
         private readonly StoreContext _context;
 
-        public DbSet<Book> Books => _context.Books;
+        public IEnumerable<Book> Books => _context.Books.Include(x => x.Author).Include(x => x.Category).ToList();
 
-        public DbSet<Author> Authors => _context.Authors;
+        public IEnumerable<Author> Authors => _context.Authors.ToList();
 
-        public DbSet<Category> Categories => _context.Categories;
-
-        public IEnumerable<Book> BooksWithAllFields => _context.Books.Include(x => x.Author).Include(x => x.Category);
+        public IEnumerable<Category> Categories => _context.Categories.ToList();
 
         public IEnumerable<Author> AuthorsOrderedByName => _context.Authors.OrderBy(author => author.Name).ToList();
 

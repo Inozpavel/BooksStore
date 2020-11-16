@@ -1,6 +1,7 @@
 ﻿using BooksStore.Models;
 using BooksStore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace BooksStore.Controllers
 {
@@ -28,7 +29,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
-        public ViewResult AllBooks() => View(_repository.BooksWithAllFields);
+        public ViewResult AllBooks() => View(_repository.Books);
 
         [HttpGet]
         public ViewResult AllAuthors() => View(_repository.Authors);

@@ -1,17 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace BooksStore.Models
 {
     public interface IStoreRepository
     {
-        public DbSet<Book> Books { get; }
+        public IEnumerable<Book> Books { get; }
 
-        public DbSet<Category> Categories { get; }
+        public IEnumerable<Category> Categories { get; }
 
-        public DbSet<Author> Authors { get; }
-
-        public IEnumerable<Book> BooksWithAllFields { get; }
+        public IEnumerable<Author> Authors { get; }
 
         public IEnumerable<Author> AuthorsOrderedByName { get; }
 
