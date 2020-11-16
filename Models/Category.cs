@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BooksStore.Models
 {
-    public class Category
+    public class Category : INameable
     {
         public int Id { get; set; }
 

@@ -11,9 +11,9 @@
 <div class="text-center">
     <h1>Список всех жанров</h1>
 </div>
-@if (TempData["deletedCategoryMessage"] != null)
+@if (TempData["DeletedElementMessage"] != null)
 {
-    <div class="alert alert-success">@TempData["deletedCategoryMessage"]</div>
+    <div class="alert alert-success">@TempData["DeletedElementMessage"] </div>
 }
 @if (Model.Any() == false)
 {

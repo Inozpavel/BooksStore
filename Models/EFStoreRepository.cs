@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -128,30 +129,37 @@ namespace BooksStore.Models
 
         #region Remove
 
-        public Book RemoveBook(int bookId)
+        public Book RemoveBook(Book book)
         {
-            Book book = _context.Books.Find(bookId);
             _context.Books.Remove(book);
             _context.SaveChanges();
             return book;
         }
 
-        public Category RemoveCategory(int categoryId)
+        public Category RemoveCategory(Category category)
         {
-            Category category = _context.Categories.Find(categoryId);
             _context.Categories.Remove(category);
             _context.SaveChanges();
             return category;
         }
 
-        public Author RemoveAuthor(int authorId)
+        public Author RemoveAuthor(Author author)
         {
-            Author author = _context.Authors.Find(authorId);
             _context.Authors.Remove(author);
             _context.SaveChanges();
             return author;
         }
 
+        public INameable Remove<T>(T element) where T : INameable
+        {
+            return element switch
+            {
+                Book book => RemoveBook(book),
+                Author author => RemoveAuthor(author),
+                Category category => RemoveCategory(category),
+                _ => throw new ArgumentException("Невозможной удалить выбранный тип!")
+            };
+        }
         public void SaveChanges() => _context.SaveChanges();
 
         #endregion

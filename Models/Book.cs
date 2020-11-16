@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BooksStore.Models
 {
-    public class Book
+    public class Book : INameable
     {
         public int Id { get; set; }
 

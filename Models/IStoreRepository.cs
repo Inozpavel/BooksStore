@@ -36,11 +36,13 @@ namespace BooksStore.Models
 
         void AddBooksRange(params Book[] books);
 
-        Book RemoveBook(int bookId);
+        Book RemoveBook(Book book);
 
-        Category RemoveCategory(int categoryId);
+        Category RemoveCategory(Category category);
 
-        Author RemoveAuthor(int authorId);
+        Author RemoveAuthor(Author author);
+
+        INameable Remove<T>(T element) where T : INameable;
 
         void UpdateBook(Book book);
 

@@ -1,7 +1,6 @@
 ﻿using BooksStore.Models;
 using BooksStore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace BooksStore.Controllers
 {
@@ -81,7 +80,7 @@ namespace BooksStore.Controllers
             {
                 if (_repository.FindCategory(category.Name) != null)
                 {
-                    TempData["ErrorMessage"] = "Жанр с таким названием уже добавлен!";
+                    ViewBag.ErrorMessage = "Жанр с таким названием уже добавлен!";
                     return ShowView("ChangeOrAddCategory", "Добавление жанра", category, "Добавить");
                 }
                 _repository.AddCategory(category);
@@ -101,7 +100,7 @@ namespace BooksStore.Controllers
             {
                 if (_repository.FindAuthor(author.Name) != null)
                 {
-                    TempData["ErrorMessage"] = "Автор с таким именем уже добавлен!";
+                    ViewBag.ErrorMessage = "Автор с таким именем уже добавлен!";
                     return ShowView("ChangeOrAddAuthor", "Добавление автора", author, "Добавить");
                 }
                 _repository.AddAuthor(author);
@@ -199,27 +198,18 @@ namespace BooksStore.Controllers
         #region Delete
 
         [HttpGet]
-        public IActionResult DeleteBook(int bookId)
-        {
-            Book book = _repository.RemoveBook(bookId);
-            TempData["deletedBookMessage"] = $"Книга \"{book.Name}\" была успешно удалена";
-            return RedirectToAction("AllBooks");
-        }
+        public IActionResult DeleteBook(int bookId) => DeleteElement("Товар", _repository.Remove(_repository.FindBook(bookId)), "AllBooks");
 
         [HttpGet]
-        public IActionResult DeleteCategory(int categoryId)
-        {
-            Category category = _repository.RemoveCategory(categoryId);
-            TempData["deletedCategoryMessage"] = $"Жанр \"{category.Name}\" был успешно удален";
-            return RedirectToAction("AllCategories");
-        }
+        public IActionResult DeleteCategory(int categoryId) => DeleteElement("Жанр", _repository.Remove(_repository.FindCategory(categoryId)), "AllCategories");
 
         [HttpGet]
-        public IActionResult DeleteAuthor(int authorId)
+        public IActionResult DeleteAuthor(int authorId) => DeleteElement("Автор", _repository.Remove(_repository.FindAuthor(authorId)), "AllAuthors");
+
+        private IActionResult DeleteElement(string itemName, INameable nameable, string redirectToActionName)
         {
-            Author author = _repository.RemoveAuthor(authorId);
-            TempData["deletedAuthorMessage"] = $"Автор \"{author.Name}\" был успешно удалён";
-            return RedirectToAction("AllAuthors");
+            TempData["DeletedElementMessage"] = $"{itemName} \"{nameable.Name}\" был успешно удален.";
+            return RedirectToActionPermanent(redirectToActionName);
         }
 
         #endregion
