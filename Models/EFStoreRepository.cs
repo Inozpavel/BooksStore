@@ -22,15 +22,15 @@ namespace BooksStore.Models
 
         #region Find
 
-        public Book FindBook(int bookId) => _context.Books.Find(bookId);
+        public Book FindBook(int bookId) => _context.Books.FirstOrDefault(book => book.Id == bookId);
 
-        public Author? FindAuthor(int authorId) => _context.Authors.Find(authorId);
+        public Author FindAuthor(int authorId) => _context.Authors.FirstOrDefault(author => author.Id == authorId);
 
-        public Author? FindAuthor(string authorName) => _context.Authors.FirstOrDefault(author => author.Name == authorName);
+        public Author FindAuthor(string authorName) => _context.Authors.FirstOrDefault(author => author.Name == authorName);
 
-        public Category? FindCategory(int categoryId) => _context.Categories.Find(categoryId);
+        public Category FindCategory(int categoryId) => _context.Categories.FirstOrDefault(category => category.Id == categoryId);
 
-        public Category? FindCategory(string categoryName) => _context.Categories.FirstOrDefault(category => category.Name == categoryName);
+        public Category FindCategory(string categoryName) => _context.Categories.FirstOrDefault(category => category.Name == categoryName);
 
         #endregion
 
