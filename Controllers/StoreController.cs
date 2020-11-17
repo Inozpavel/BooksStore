@@ -84,7 +84,7 @@ namespace BooksStore.Controllers
                     return ShowView("ChangeOrAddCategory", "Добавление жанра", category, "Добавить");
                 }
                 _repository.AddCategory(category);
-                return RedirectToAction("AllCategories");
+                return RedirectToActionPermanent("AllCategories");
             }
             else
                 return ShowView("ChangeOrAddCategory", "Добавление жанра", category, "Добавить");
@@ -104,7 +104,7 @@ namespace BooksStore.Controllers
                     return ShowView("ChangeOrAddAuthor", "Добавление автора", author, "Добавить");
                 }
                 _repository.AddAuthor(author);
-                return RedirectToAction("AllAuthors");
+                return RedirectToActionPermanent("AllAuthors");
             }
             else
                 return ShowView("ChangeOrAddAuthor", "Добавление автора", author, "Добавить");
