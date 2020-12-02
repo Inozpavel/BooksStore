@@ -12,22 +12,27 @@ namespace BooksStore
     {
         public IConfiguration Configuration { get; private set; }
 
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(services => services.EnableEndpointRouting = false);
             services.AddSingleton<IStoreRepository, EFStoreRepository>();
             string connectionString = Configuration["LocalDbConnectionString"];
             services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddAuthentication("Cookies")
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.LogoutPath = "/Account/Logout";
+                    options.AccessDeniedPath = "/Accout/AccessDenied";
+                    options.Cookie.IsEssential = true;
+                    options.Cookie.HttpOnly = true;
+                });
+            services.AddAuthorization();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -38,11 +43,16 @@ namespace BooksStore
             app.UseStaticFiles();
             app.UseStatusCodePages();
 
+            app.UseAuthorization();
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Store}/{action=Index}/{id?}");
             });
+
             SeedData.EnsureBooksAdded(app);
+            SeedData.EnsureRolesAdded(app);
         }
     }
 }

@@ -13,6 +13,12 @@ namespace BooksStore.Models
         public IEnumerable<Author> AuthorsOrderedByName { get; }
 
         public IEnumerable<Category> CategoriesOrderedByName { get; }
+        public IEnumerable<Role> Roles { get; }
+        public IEnumerable<User> Users { get; }
+
+        User FindUser(int userId);
+
+        User FindUser(string email, string password);
 
         Book FindBook(int bookId);
 
@@ -23,6 +29,8 @@ namespace BooksStore.Models
         Category FindCategory(int categoryId);
 
         Category FindCategory(string categoryName);
+
+        Role FindRole(string roleName);
 
         void AddBook(Book book);
 
@@ -35,6 +43,10 @@ namespace BooksStore.Models
         void AddCategory(string categoryName);
 
         void AddBooksRange(params Book[] books);
+
+        void AddUser(User user);
+
+        void AddRole(Role role);
 
         Book RemoveBook(Book book);
 
@@ -51,5 +63,9 @@ namespace BooksStore.Models
         void UpdateAuthor(Author author);
 
         void SaveChanges();
+
+        bool CheckEmailAlreadyExists(string email);
+
+        bool CheckPhoneAlreadyExists(string phone);
     }
 }

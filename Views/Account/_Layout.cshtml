@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form-sign_in.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form-registration.css" asp-append-version="true" />
+    @if (Context.Request.Cookies["Theme"] == "Dark" || true)
+    {
+        <link rel="stylesheet" href="~/css/user-data-form-dark.css" asp-append-version="true" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/css/user-data-form-light.css" asp-append-version="true" />
+    }
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="center-element">
+        @RenderBody()
+    </div>
+</body>
+</html>

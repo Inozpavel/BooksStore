@@ -19,9 +19,17 @@ namespace BooksStore.Models
 
         public IEnumerable<Category> CategoriesOrderedByName => _context.Categories.OrderBy(category => category.Name).ToList();
 
+        public IEnumerable<User> Users => _context.Users.ToList();
+
+        public IEnumerable<Role> Roles => _context.Roles.ToList();
+
         public EFStoreRepository(StoreContext context) => _context = context;
 
         #region Find
+
+        public User FindUser(int userId) => _context.Users.FirstOrDefault(user => user.Id == userId);
+
+        public User FindUser(string email, string password) => _context.Users.FirstOrDefault(user => user.Email == email && user.Password == password);
 
         public Book FindBook(int bookId) => _context.Books.FirstOrDefault(book => book.Id == bookId);
 
@@ -32,6 +40,8 @@ namespace BooksStore.Models
         public Category FindCategory(int categoryId) => _context.Categories.FirstOrDefault(category => category.Id == categoryId);
 
         public Category FindCategory(string categoryName) => _context.Categories.FirstOrDefault(category => category.Name == categoryName);
+
+        public Role FindRole(string roleName) => _context.Roles.FirstOrDefault(role => role.Name == roleName);
 
         #endregion
 
@@ -103,6 +113,18 @@ namespace BooksStore.Models
             _context.SaveChanges();
         }
 
+        public void AddUser(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+        }
+
+        public void AddRole(Role role)
+        {
+            _context.Roles.Add(role);
+            _context.SaveChanges();
+        }
+
         #endregion
 
         #region Update
@@ -163,5 +185,8 @@ namespace BooksStore.Models
         public void SaveChanges() => _context.SaveChanges();
 
         #endregion
+        public bool CheckEmailAlreadyExists(string email) => _context.Users.Any(x => x.Email == email);
+
+        public bool CheckPhoneAlreadyExists(string phone) => _context.Users.Any(x => x.Phone == phone);
     }
 }

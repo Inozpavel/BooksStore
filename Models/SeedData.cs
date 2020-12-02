@@ -6,6 +6,18 @@ namespace BooksStore.Models
 {
     public static class SeedData
     {
+        public static void EnsureRolesAdded(IApplicationBuilder applicationBuilder)
+        {
+            IStoreRepository repository = applicationBuilder.ApplicationServices.GetRequiredService<IStoreRepository>();
+
+            if (repository.Roles.Any() == false)
+            {
+                repository.AddRole(new Role() { Name = "admin" });
+                repository.AddRole(new Role() { Name = "manager" });
+                repository.AddRole(new Role() { Name = "user" });
+            }
+        }
+
         public static void EnsureBooksAdded(IApplicationBuilder applicationBuilder)
         {
             IStoreRepository repository = applicationBuilder.ApplicationServices.GetRequiredService<IStoreRepository>();

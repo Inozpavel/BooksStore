@@ -1,0 +1,42 @@
+﻿@model BooksStore.Models.User
+@{ 
+    ViewBag.Title = "Регистрация";
+}
+<form class="mt-5 form-registration" method="post">
+    <div class="form-row align-items-center">
+        <div class="form-group col-6">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" autofocus type="text" />
+            <span class="text-danger small" asp-validation-for="Name"></span>
+        </div>
+        <div class="form-group col-6">
+            <label asp-for="SecondName"></label>
+            <input asp-for="SecondName" class="form-control" autofocus type="text" />
+            <span class="text-danger small" asp-validation-for="SecondName"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span class="text-danger small" asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" class="form-control" type="tel" />
+        <span class="text-danger small" asp-validation-for="Phone"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" type="password" />
+        <span class="text-danger small" asp-validation-for="Password"></span>
+    </div>
+    <div class="form-group">
+        <label>Подтверждение пароля</label>
+        <input asp-for="PasswordConfirmation" class="form-control" id="PasswordConfirmation" type="password"/>
+        <span class="text-danger small" asp-validation-for="PasswordConfirmation"></span>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary mt-3 btn-lg" type="submit">Зарегистрироваться</button>
+    </div>
+</form>
+<script src="~/js/InputsValidation.js" asp-append-version="true"></script>

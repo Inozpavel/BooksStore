@@ -1,6 +1,8 @@
 ﻿using BooksStore.Models;
 using BooksStore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace BooksStore.Controllers
 {
@@ -12,20 +14,6 @@ namespace BooksStore.Controllers
 
         [HttpGet]
         public ViewResult Index() => View();
-
-        [HttpGet]
-        public ViewResult Login() => View();
-
-        [HttpGet]
-        public ViewResult Registration() => View();
-
-        [HttpPost]
-        public IActionResult Registration(User user)
-        {
-            if (ModelState.IsValid == false)
-                return View();
-            return RedirectToAction("Index");
-        }
 
         [HttpGet]
         public ViewResult AllBooks() => View(_repository.Books);
@@ -219,6 +207,15 @@ namespace BooksStore.Controllers
             ViewBag.Title = viewTitle;
             ViewBag.ButtonText = buttonText;
             return View(viewName, model);
+        }
+
+        private void Authentificate(User user)
+        {
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name),
+            };
         }
     }
 }

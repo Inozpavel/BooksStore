@@ -1,0 +1,33 @@
+﻿html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #242424;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+form {
+    margin: 30px auto;
+    height: 100%;
+    width: 100%;
+}
+
+.center-element {
+    background: #333333;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    max-width: 450px;
+    min-width: 300px;
+    border-radius: 10px;
+    border: 1px solid white;
+}
+
+#btn-registration {
+    background: #007BFF;
+    color: white;
+}
