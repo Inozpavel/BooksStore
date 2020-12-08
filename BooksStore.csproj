@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\" />
+    <Compile Remove="BooksStore.Tests\**" />
+    <Content Remove="BooksStore.Tests\**" />
+    <EmbeddedResource Remove="BooksStore.Tests\**" />
+    <None Remove="BooksStore.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
