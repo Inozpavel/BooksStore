@@ -18,7 +18,7 @@ namespace BooksStore.Models
         [DisplayName("Фамилия")]
         public string SecondName { get; set; }
 
-        [DisplayName("Номер телефона")]
+        [DisplayName("Контактный телефон")]
         public string Phone { get; set; }
 
         public int RoleId { get; set; }
