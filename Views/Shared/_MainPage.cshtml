@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/main-page.css" asp-append-version="true" />
+    @if (Context.Request.Cookies["Theme"] == "Dark")
+    {
+        <link rel="stylesheet" href="~/css/main-page-dark-style.css" asp-append-version="true" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/css/main-page-light-style.css" asp-append-version="true" />
+    }
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-dark">
+            <a asp-action="Index" asp-controller="Store">
+                <h1 class="brand">BooksMarket</h1>
+            </a>
+            <div class="row">
+                <form class="form-inline">
+                    <input class="form-control" id="search-field" placeholder="Найти книгу">
+                    <button class="btn btn-outline-success ml-2" type="submit">Поиск</button>
+                </form>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (Context.Request.Cookies["Theme"] == "Dark")
+                    {
+                        <a asp-action="ChangeTheme" asp-controller="Account" asp-route-themeName="Light" asp-route-returnUrl="@Context.Request.Path" class="theme-link ml-2">
+                            <img class="theme-image" src="~/images/light-sun.svg"/>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="ChangeTheme" asp-controller="Account" asp-route-themeName="Dark" asp-route-returnUrl="@Context.Request.Path" class="theme-link ml-2">
+                            <img class="theme-image" src="~/images/dark-sun.svg"/>
+                        </a>
+                    }
+                    <a asp-action="Profile" asp-controller="Account" class="btn btn-primary ml-2">Личный кабинет</a>
+                    <a asp-action="Logout" asp-controller="Account" class="btn btn-primary ml-2 mr-2">Выйти</a>
+                }
+                else
+                {
+                    <a asp-action="Login" asp-controller="Account" class="btn btn-primary ml-2 mr-2">Войти</a>
+                }
+            </div>
+        </nav>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer class="container-fluid py-5">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-3">
+                <h5>Каталог</h5>
+                <span>© BooksStore</span>
+                <p>2020 - 2020</p>
+            </div>
+            <div class="col-3">
+                <h5>Мы в социальных сетях</h5>
+                <a href="#">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <img height="30" width="30" src="~/images/vk.svg">
+                        </div>
+                        <label class="ml-2 mt-0">Вконтакте</label>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="input-group">
+                        <img height="30" width="30" src="~/images/youtube.svg">
+                        <label class="ml-2">Youtube</label>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="input-group">
+                        <img height="30" width="30" src="~/images/telegram.svg">
+                        <label class="ml-2 mt-1">Telegram</label>
+                    </div>
+                </a>
+            </div>
+            <div class="col-3">
+                <h5 >Каталог</h5>
+                <a class="nav-link">О нас</a>
+                <a class="nav-link">Доставка и оплата</a>
+                <a class="nav-link">Контакты</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

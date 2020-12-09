@@ -1,0 +1,32 @@
+﻿body {
+    background-color: #202020;
+}
+
+h1, h5, label, span, p, a {
+    color: white;
+}
+
+#search-field {
+    border-color: #CCCCCC;
+}
+
+header, footer {
+    background-color: #191A1B
+}
+
+input {
+    background-color: #121212 !important;
+    color: #C8C8C8 !important;
+}
+
+input:focus {
+    color: white !important;
+}
+
+.theme-link {
+    filter: invert(100%);
+}
+
+a:hover {
+    color: white !important;
+}

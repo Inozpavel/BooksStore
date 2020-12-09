@@ -1,0 +1,25 @@
+﻿body {
+    background-color: #F3F2F3;
+}
+
+h1, h5, label, span, p, a {
+    color: black;
+}
+
+#search-field {
+    border-color: #CCCCCC;
+}
+
+header, footer {
+    background-color: white
+}
+
+input {
+    background-color: white !important;
+    color: gray !important;
+}
+
+input:focus {
+    color: black !important;
+} 
+

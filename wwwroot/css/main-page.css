@@ -1,0 +1,61 @@
+.carousel-inner {
+    width: 100%;
+    max-height: 600px !important;
+}
+
+a {
+    display: block;
+}
+
+.carousel-img {
+    height: 600px;
+}
+
+html, body {
+    height: 100%;
+}
+
+main {
+    padding-bottom: 50px;
+}
+
+.brand {
+    display: inline-block;
+    font-size: 1.25rem;
+}
+
+.theme-link {
+    transition: 0.15s;
+    border: 2px solid rgba(0,0,0,0);
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.theme-link:hover {
+    transition: 0.15s;
+    border: 2px solid #0069D9;
+    background-color: transparent;
+}
+
+.theme-image {
+    height: 33px;
+    width: 33px;
+}
+
+footer {
+    bottom: 0;
+    position: relative;
+}
+
+#search-field {
+    font-size: 16px;
+    font-weight: 400;
+    height: 38px;
+    text-align: center;
+    width: 250px;
+}
+
+input {
+    font-size: 16px;
+    font-weight: 400;
+}
