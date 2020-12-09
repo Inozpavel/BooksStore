@@ -31,6 +31,8 @@ namespace BooksStore.Models
 
         public User FindUser(string email, string password) => _context.Users.FirstOrDefault(user => user.Email == email && user.Password == password);
 
+        public User FindUser(string email) => _context.Users.FirstOrDefault(user => user.Email == email);
+
         public Book FindBook(int bookId) => _context.Books.FirstOrDefault(book => book.Id == bookId);
 
         public Author FindAuthor(int authorId) => _context.Authors.FirstOrDefault(author => author.Id == authorId);
@@ -147,6 +149,12 @@ namespace BooksStore.Models
             _context.SaveChanges();
         }
 
+        public void UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
+
         #endregion
 
         #region Remove
@@ -186,7 +194,5 @@ namespace BooksStore.Models
 
         #endregion
         public bool CheckEmailAlreadyExists(string email) => _context.Users.Any(x => x.Email == email);
-
-        public bool CheckPhoneAlreadyExists(string phone) => _context.Users.Any(x => x.Phone == phone);
     }
 }

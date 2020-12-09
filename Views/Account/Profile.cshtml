@@ -1,0 +1,58 @@
+﻿@model BooksStore.Models.User
+@{
+    Layout = "_MainPage";
+}
+
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true"/>
+@if (Context.Request.Cookies["Theme"] == "Dark")
+{
+    <link rel="stylesheet" href="~/css/profile-dark.css" asp-append-version="true"/>
+}
+else
+{
+    <link rel="stylesheet" href="~/css/profile-light.css" asp-append-version="true"/>
+}
+
+<ul class="cabinet-nav">
+    <li class="cabinet-nav-link selected">
+        <a asp-action="Profile">Мой профиль</a>
+    </li>
+    <li class="cabinet-nav-link">
+        <a asp-action="Orders">Мои заказы</a>
+    </li>
+    <li class="cabinet-nav-link">
+        <a asp-action="Settings">Настройки</a>
+    </li>
+</ul>
+
+<div class="user-data-card">
+    <form method="post">
+        <span>Личные данные</span>
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" value="@Model.Name" class="form-control" />
+            <span class="text-danger small" asp-validation-for="Name"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SecondName"></label>
+            <input asp-for="SecondName" value="@Model.SecondName" class="form-control" />
+            <span class="text-danger small" asp-validation-for="SecondName"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" value="@Model.Email" class="form-control" />
+            <span class="text-danger small" asp-validation-for="Email"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Phone"></label>
+            <input asp-for="Phone" value="@Model.Phone" class="form-control" />
+            <span class="text-danger small" asp-validation-for="Phone"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+    </form>
+</div>
+
+<script src="~/js/InputsValidation.js" asp-append-version="true"></script>

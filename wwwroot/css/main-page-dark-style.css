@@ -2,7 +2,7 @@
     background-color: #202020;
 }
 
-h1, h5, label, span, p, a {
+* {
     color: white;
 }
 

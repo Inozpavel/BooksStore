@@ -13,12 +13,16 @@ namespace BooksStore.Models
         public IEnumerable<Author> AuthorsOrderedByName { get; }
 
         public IEnumerable<Category> CategoriesOrderedByName { get; }
+
         public IEnumerable<Role> Roles { get; }
+
         public IEnumerable<User> Users { get; }
 
         User FindUser(int userId);
 
         User FindUser(string email, string password);
+
+        User FindUser(string email);
 
         Book FindBook(int bookId);
 
@@ -62,10 +66,10 @@ namespace BooksStore.Models
 
         void UpdateAuthor(Author author);
 
+        void UpdateUser(User user);
+
         void SaveChanges();
 
         bool CheckEmailAlreadyExists(string email);
-
-        bool CheckPhoneAlreadyExists(string phone);
     }
 }

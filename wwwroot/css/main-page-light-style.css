@@ -2,7 +2,7 @@
     background-color: #F3F2F3;
 }
 
-h1, h5, label, span, p, a {
+* {
     color: black;
 }
 

@@ -26,9 +26,8 @@ namespace BooksStore
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                     options.LogoutPath = "/Account/Logout";
-                    options.AccessDeniedPath = "/Accout/AccessDenied";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
                     options.Cookie.IsEssential = true;
-                    options.Cookie.HttpOnly = true;
                 });
             services.AddAuthorization();
         }
@@ -39,9 +38,12 @@ namespace BooksStore
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseStatusCodePages();
+            }
 
             app.UseStaticFiles();
-            app.UseStatusCodePages();
 
             app.UseAuthorization();
             app.UseAuthentication();
