@@ -52,11 +52,11 @@ namespace BooksStore.Models
 
         void AddRole(Role role);
 
-        Book RemoveBook(Book book);
+        INameable RemoveBook(Book book);
 
-        Category RemoveCategory(Category category);
+        INameable RemoveCategory(Category category);
 
-        Author RemoveAuthor(Author author);
+        INameable RemoveAuthor(Author author);
 
         INameable Remove<T>(T element) where T : INameable;
 
@@ -67,8 +67,6 @@ namespace BooksStore.Models
         void UpdateAuthor(Author author);
 
         void UpdateUser(User user);
-
-        void SaveChanges();
 
         bool CheckEmailAlreadyExists(string email);
     }

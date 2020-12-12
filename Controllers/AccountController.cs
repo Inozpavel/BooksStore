@@ -107,7 +107,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChangeTheme(string themeName, string returnUrl = null)
+        public IActionResult ChangeTheme(string themeName, string returnUrl = null, string parameters = null)
         {
             if (themeName == "Light")
                 Response.Cookies.Append("Theme", "Light");
@@ -117,7 +117,7 @@ namespace BooksStore.Controllers
                 return NotFound();
 
             if (string.IsNullOrWhiteSpace(returnUrl) == false)
-                return Redirect(returnUrl);
+                return Redirect(returnUrl + parameters ?? "");
 
             return Redirect("/Store/Index");
         }

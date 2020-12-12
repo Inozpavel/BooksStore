@@ -31,13 +31,13 @@
                 {
                     if (Context.Request.Cookies["Theme"] == "Dark")
                     {
-                        <a asp-action="ChangeTheme" asp-controller="Account" asp-route-themeName="Light" asp-route-returnUrl="@Context.Request.Path" class="theme-link ml-2">
+                        <a asp-action="ChangeTheme" asp-controller="Account" asp-route-themeName="Light" asp-route-returnUrl="@Context.Request.Path" asp-route-parameters="@Context.Request.QueryString" class="theme-link ml-2">
                             <img class="theme-image" src="~/images/light-sun.svg"/>
                         </a>
                     }
                     else
                     {
-                        <a asp-action="ChangeTheme" asp-controller="Account" asp-route-themeName="Dark" asp-route-returnUrl="@Context.Request.Path" class="theme-link ml-2">
+                        <a asp-action="ChangeTheme" asp-controller="Account" asp-route-themeName="Dark" asp-route-returnUrl="@Context.Request.Path" asp-route-parameters="@Context.Request.QueryString" class="theme-link ml-2">
                             <img class="theme-image" src="~/images/dark-sun.svg"/>
                         </a>
                     }

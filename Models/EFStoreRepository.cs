@@ -27,11 +27,11 @@ namespace BooksStore.Models
 
         #region Find
 
-        public User FindUser(int userId) => _context.Users.FirstOrDefault(user => user.Id == userId);
+        public User FindUser(int userId) => _context.Users.Include(x => x.Role).FirstOrDefault(user => user.Id == userId);
 
-        public User FindUser(string email, string password) => _context.Users.FirstOrDefault(user => user.Email == email && user.Password == password);
+        public User FindUser(string email, string password) => _context.Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email && user.Password == password);
 
-        public User FindUser(string email) => _context.Users.FirstOrDefault(user => user.Email == email);
+        public User FindUser(string email) => _context.Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email);
 
         public Book FindBook(int bookId) => _context.Books.FirstOrDefault(book => book.Id == bookId);
 
@@ -65,24 +65,13 @@ namespace BooksStore.Models
         {
             foreach (var book in books)
             {
-                _context.Books.Add(new Book()
-                {
-                    Name = book.Name,
-                    Author = FindAuthor(book.Author.Name) ?? book.Author,
-                    Category = FindCategory(book.Category.Name) ?? book.Category,
-                    Description = book.Description
-                });
-                _context.SaveChanges();
+                AddBook(book);
             }
         }
 
         public void AddAuthor(Author author)
         {
-            _context.Authors.Add(new Author()
-            {
-                Name = author.Name,
-                Description = author.Description
-            });
+            _context.Authors.Add(author);
             _context.SaveChanges();
 
         }
@@ -98,11 +87,7 @@ namespace BooksStore.Models
 
         public void AddCategory(Category category)
         {
-            _context.Categories.Add(new Category()
-            {
-                Name = category.Name,
-                Description = category.Description
-            });
+            _context.Categories.Add(category);
             _context.SaveChanges();
         }
 
@@ -159,21 +144,21 @@ namespace BooksStore.Models
 
         #region Remove
 
-        public Book RemoveBook(Book book)
+        public INameable RemoveBook(Book book)
         {
             _context.Books.Remove(book);
             _context.SaveChanges();
             return book;
         }
 
-        public Category RemoveCategory(Category category)
+        public INameable RemoveCategory(Category category)
         {
             _context.Categories.Remove(category);
             _context.SaveChanges();
             return category;
         }
 
-        public Author RemoveAuthor(Author author)
+        public INameable RemoveAuthor(Author author)
         {
             _context.Authors.Remove(author);
             _context.SaveChanges();
@@ -190,9 +175,9 @@ namespace BooksStore.Models
                 _ => throw new ArgumentException("Невозможной удалить выбранный тип!")
             };
         }
-        public void SaveChanges() => _context.SaveChanges();
 
         #endregion
+
         public bool CheckEmailAlreadyExists(string email) => _context.Users.Any(x => x.Email == email);
     }
 }

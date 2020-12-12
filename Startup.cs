@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
 
 namespace BooksStore
 {
@@ -17,7 +18,7 @@ namespace BooksStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(services => services.EnableEndpointRouting = false);
-            services.AddSingleton<IStoreRepository, EFStoreRepository>();
+            services.AddScoped<IStoreRepository, EFStoreRepository>();
             string connectionString = Configuration["LocalDbConnectionString"];
             services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 
@@ -29,7 +30,21 @@ namespace BooksStore
                     options.AccessDeniedPath = "/Account/AccessDenied";
                     options.Cookie.IsEssential = true;
                 });
-            services.AddAuthorization();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CanChangeItems",
+                    policy => policy.RequireAssertion(x => x.User.HasClaim(ClaimsIdentity.DefaultRoleClaimType, "admin")
+                                                        || x.User.HasClaim(ClaimsIdentity.DefaultRoleClaimType, "manager")));
+
+                options.AddPolicy("CanRomoveItems",
+                    policy => policy.RequireClaim(ClaimsIdentity.DefaultRoleClaimType, "admin"));
+
+                options.AddPolicy("CanAddItems",
+                   policy => policy.RequireAssertion(x => x.User.HasClaim(ClaimsIdentity.DefaultRoleClaimType, "admin")
+                                                       || x.User.HasClaim(ClaimsIdentity.DefaultRoleClaimType, "manager")));
+
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,9 +54,7 @@ namespace BooksStore
                 app.UseDeveloperExceptionPage();
             }
             else
-            {
                 app.UseStatusCodePages();
-            }
 
             app.UseStaticFiles();
 
