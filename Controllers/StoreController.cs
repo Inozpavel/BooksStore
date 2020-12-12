@@ -1,8 +1,7 @@
 ﻿using BooksStore.Models;
 using BooksStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace BooksStore.Controllers
 {
@@ -27,6 +26,7 @@ namespace BooksStore.Controllers
         #region Add
 
         [HttpGet]
+        [Authorize(Policy = "CanAddItems")]
         public ViewResult AddBook()
         {
             BookInputViewModel model = new BookInputViewModel()
@@ -43,6 +43,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanAddItems")]
         public IActionResult AddBook(BookInputViewModel model)
         {
             if (ModelState.IsValid)
@@ -59,9 +60,11 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanAddItems")]
         public ViewResult AddCategory() => ShowView("ChangeOrAddCategory", "Добавление жанра", new Category(), "Добавить");
 
         [HttpPost]
+        [Authorize(Policy = "CanAddItems")]
         public IActionResult AddCategory(Category category)
         {
             if (ModelState.IsValid)
@@ -82,6 +85,7 @@ namespace BooksStore.Controllers
         public ViewResult AddAuthor() => ShowView("ChangeOrAddAuthor", "Добавление автора", new Author(), "Добавить");
 
         [HttpPost]
+        [Authorize(Policy = "CanAddItems")]
         public IActionResult AddAuthor(Author author)
         {
             if (ModelState.IsValid)
@@ -103,6 +107,7 @@ namespace BooksStore.Controllers
         #region Change
 
         [HttpGet]
+        [Authorize(Policy = "CanChangeItems")]
         public IActionResult ChangeBook(int bookId)
         {
             Book book = _repository.FindBook(bookId);
@@ -118,13 +123,15 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanChangeItems")]
         public IActionResult ChangeBook(BookInputViewModel model)
         {
-            model.Book.Author = _repository.FindAuthor(model.Book.Author.Name);
-            model.Book.Category = _repository.FindCategory(model.Book.Category.Name);
             if (ModelState.IsValid)
             {
-                _repository.UpdateBook(model.Book);
+                Book book = model.Book;
+                book.Author = _repository.FindAuthor(book.Author.Name);
+                book.Category = _repository.FindCategory(book.Category.Name);
+                _repository.UpdateBook(book);
                 return RedirectToAction("AllBooks");
             }
             else
@@ -140,6 +147,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanChangeItems")]
         public IActionResult ChangeCategory(int categoryId)
         {
             Category category = _repository.FindCategory(categoryId);
@@ -149,6 +157,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanChangeItems")]
         public IActionResult ChangeCategory(Category category)
         {
             if (ModelState.IsValid)
@@ -161,6 +170,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanChangeItems")]
         public IActionResult ChangeAuthor(int authorId)
         {
             Author author = _repository.FindAuthor(authorId);
@@ -170,6 +180,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanChangeItems")]
         public IActionResult ChangeAuthor(Author author)
         {
             if (ModelState.IsValid)
@@ -183,18 +194,21 @@ namespace BooksStore.Controllers
 
         #endregion
 
-        #region Delete
+        #region Remove
 
         [HttpGet]
-        public IActionResult DeleteBook(int bookId) => DeleteElement("Товар", _repository.Remove(_repository.FindBook(bookId)), "AllBooks");
+        [Authorize(Policy = "CanRomoveItems")]
+        public IActionResult RemoveBook(int bookId) => RemoveElement("Товар", _repository.Remove(_repository.FindBook(bookId)), "AllBooks");
 
         [HttpGet]
-        public IActionResult DeleteCategory(int categoryId) => DeleteElement("Жанр", _repository.Remove(_repository.FindCategory(categoryId)), "AllCategories");
+        [Authorize(Policy = "CanRomoveItems")]
+        public IActionResult RemoveCategory(int categoryId) => RemoveElement("Жанр", _repository.Remove(_repository.FindCategory(categoryId)), "AllCategories");
 
         [HttpGet]
-        public IActionResult DeleteAuthor(int authorId) => DeleteElement("Автор", _repository.Remove(_repository.FindAuthor(authorId)), "AllAuthors");
+        [Authorize(Policy = "CanRomoveItems")]
+        public IActionResult RemoveAuthor(int authorId) => RemoveElement("Автор", _repository.Remove(_repository.FindAuthor(authorId)), "AllAuthors");
 
-        private IActionResult DeleteElement(string itemName, INameable nameable, string redirectToActionName)
+        private IActionResult RemoveElement(string itemName, INameable nameable, string redirectToActionName)
         {
             TempData["DeletedElementMessage"] = $"{itemName} \"{nameable.Name}\" был успешно удален.";
             return RedirectToActionPermanent(redirectToActionName);
@@ -209,13 +223,5 @@ namespace BooksStore.Controllers
             return View(viewName, model);
         }
 
-        private void Authentificate(User user)
-        {
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name),
-            };
-        }
     }
 }
