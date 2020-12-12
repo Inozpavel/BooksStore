@@ -82,6 +82,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanAddItems")]
         public ViewResult AddAuthor() => ShowView("ChangeOrAddAuthor", "Добавление автора", new Author(), "Добавить");
 
         [HttpPost]

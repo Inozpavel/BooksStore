@@ -3,14 +3,14 @@
     Layout = "_MainPage";
 }
 
-<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
 @if (Context.Request.Cookies["Theme"] == "Dark")
 {
-    <link rel="stylesheet" href="~/css/profile-dark.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/profile-dark.css" asp-append-version="true" />
 }
 else
 {
-    <link rel="stylesheet" href="~/css/profile-light.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/profile-light.css" asp-append-version="true" />
 }
 
 <ul class="cabinet-nav">
@@ -44,9 +44,9 @@ else
             <span class="text-danger small" asp-validation-for="Email"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Phone"></label>
-            <input asp-for="Phone" value="@Model.Phone" class="form-control" />
-            <span class="text-danger small" asp-validation-for="Phone"></span>
+            <label asp-for="SecondName"></label>
+            <input asp-for="SecondName" value="@Model.SecondName" class="form-control" />
+            <span class="text-danger small" asp-validation-for="SecondName"></span>
         </div>
 
         <div class="form-group">
@@ -54,5 +54,8 @@ else
         </div>
     </form>
 </div>
-
+@if (TempData["UpdateMessage"] != null)
+{
+    <div class="alert alert-success mt-5">@TempData["UpdateMessage"] </div>
+}
 <script src="~/js/InputsValidation.js" asp-append-version="true"></script>

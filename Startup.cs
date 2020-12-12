@@ -64,6 +64,7 @@ namespace BooksStore
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Store}/{action=Index}/{id?}");
+                routes.MapRoute("profile", "{controller=Account}/{action=Profile}");
             });
 
             SeedData.EnsureBooksAdded(app);

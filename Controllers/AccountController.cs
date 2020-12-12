@@ -85,24 +85,27 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Profile(User user)
+        public async Task<ActionResult> Profile(User user)
         {
             User userToUpdate = _repository.FindUser(HttpContext.User.Identity.Name);
             if (user == null)
                 return NotFound();
 
-            if (_repository.CheckEmailAlreadyExists(user.Email))
+            ModelState.Clear();
+            if (user.Email != userToUpdate?.Email && _repository.CheckEmailAlreadyExists(user.Email))
                 ModelState.AddModelError("Email", "Указанный адрес почты уже зарегестрирован!");
-
-            if (ModelState.IsValid == false)
+            user.Password = userToUpdate?.Password;
+            if (TryValidateModel(user) == false)
                 return View(user);
-
+            
             userToUpdate.Name = user.Name;
             userToUpdate.SecondName = user.SecondName;
             userToUpdate.Email = user.Email;
             userToUpdate.Phone = user.Phone;
 
             _repository.UpdateUser(userToUpdate);
+            TempData["UpdateMessage"] = "Информация была успешно обновлена!";
+            await Authenticate(userToUpdate);
             return View(user);
         }
 
