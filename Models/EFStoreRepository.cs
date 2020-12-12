@@ -23,6 +23,8 @@ namespace BooksStore.Models
 
         public IEnumerable<Role> Roles => _context.Roles.ToList();
 
+        public IEnumerable<ProductImage> Images => _context.Images.ToList();
+
         public EFStoreRepository(StoreContext context) => _context = context;
 
         #region Find

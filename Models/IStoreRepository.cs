@@ -18,6 +18,8 @@ namespace BooksStore.Models
 
         public IEnumerable<User> Users { get; }
 
+        public IEnumerable<ProductImage> Images { get; }
+
         User FindUser(int userId);
 
         User FindUser(string email, string password);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BooksStore.Models
@@ -19,12 +20,12 @@ namespace BooksStore.Models
 
         public Category Category { get; set; }
 
+        public int ProductImageId { get; set; }
+
+        public List<ProductImage> BookImages { get; set; }
+
         [DisplayName("Описание книги")]
         public string Description { get; set; }
 
-        public Book()
-        {
-
-        }
     }
 }
