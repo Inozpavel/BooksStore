@@ -26,7 +26,7 @@ namespace BooksStore.Controllers
         #region Add
 
         [HttpGet]
-        [Authorize(Policy = "CanAddItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public ViewResult AddBook()
         {
             BookInputViewModel model = new BookInputViewModel()
@@ -43,7 +43,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "CanAddItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult AddBook(BookInputViewModel model)
         {
             if (ModelState.IsValid)
@@ -60,11 +60,11 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "CanAddItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public ViewResult AddCategory() => ShowView("ChangeOrAddCategory", "Добавление жанра", new Category(), "Добавить");
 
         [HttpPost]
-        [Authorize(Policy = "CanAddItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult AddCategory(Category category)
         {
             if (ModelState.IsValid)
@@ -82,11 +82,11 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "CanAddItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public ViewResult AddAuthor() => ShowView("ChangeOrAddAuthor", "Добавление автора", new Author(), "Добавить");
 
         [HttpPost]
-        [Authorize(Policy = "CanAddItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult AddAuthor(Author author)
         {
             if (ModelState.IsValid)
@@ -108,7 +108,7 @@ namespace BooksStore.Controllers
         #region Change
 
         [HttpGet]
-        [Authorize(Policy = "CanChangeItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult ChangeBook(int bookId)
         {
             Book book = _repository.FindBook(bookId);
@@ -124,7 +124,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "CanChangeItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult ChangeBook(BookInputViewModel model)
         {
             if (ModelState.IsValid)
@@ -148,7 +148,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "CanChangeItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult ChangeCategory(int categoryId)
         {
             Category category = _repository.FindCategory(categoryId);
@@ -158,7 +158,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "CanChangeItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult ChangeCategory(Category category)
         {
             if (ModelState.IsValid)
@@ -171,7 +171,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "CanChangeItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult ChangeAuthor(int authorId)
         {
             Author author = _repository.FindAuthor(authorId);
@@ -181,7 +181,7 @@ namespace BooksStore.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "CanChangeItems")]
+        [Authorize(Policy = "CanChangeOrAddItems")]
         public IActionResult ChangeAuthor(Author author)
         {
             if (ModelState.IsValid)
@@ -198,15 +198,15 @@ namespace BooksStore.Controllers
         #region Remove
 
         [HttpGet]
-        [Authorize(Policy = "CanRomoveItems")]
+        [Authorize(Policy = "CanRemoveItems")]
         public IActionResult RemoveBook(int bookId) => RemoveElement("Товар", _repository.Remove(_repository.FindBook(bookId)), "AllBooks");
 
         [HttpGet]
-        [Authorize(Policy = "CanRomoveItems")]
+        [Authorize(Policy = "CanRemoveItems")]
         public IActionResult RemoveCategory(int categoryId) => RemoveElement("Жанр", _repository.Remove(_repository.FindCategory(categoryId)), "AllCategories");
 
         [HttpGet]
-        [Authorize(Policy = "CanRomoveItems")]
+        [Authorize(Policy = "CanRemoveItems")]
         public IActionResult RemoveAuthor(int authorId) => RemoveElement("Автор", _repository.Remove(_repository.FindAuthor(authorId)), "AllAuthors");
 
         private IActionResult RemoveElement(string itemName, INameable nameable, string redirectToActionName)

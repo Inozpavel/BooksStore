@@ -1,6 +1,10 @@
 ﻿@model IEnumerable<BooksStore.Models.Author>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @{
     ViewBag.Title = "Список всех авторов";
+    bool canChangeOrAddItems = (await AuthorizationService.AuthorizeAsync(User, "CanChangeOrAddItems")).Succeeded;
+    bool canRemoveItems = (await AuthorizationService.AuthorizeAsync(User, "CanRemoveItems")).Succeeded;
 }
 
 <div class="btn-group ml-3 mt-3" role="group" aria-label="Basic example">
@@ -23,39 +27,54 @@
 }
 else
 {
-<table class="table table-bordered table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th class="text-center">Имя</th>
-            @if (Model.Any(author => author.Description != null))
-            {
-                <th>Описание</th>
-            }
-            <th class="text-center mr-5">Управление</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var author in Model)
-        {
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
             <tr>
-                <td>@author.Id</td>
-                <td class="text-center">@author.Name</td>
+                <th>Id</th>
+                <th class="text-center">Имя</th>
                 @if (Model.Any(author => author.Description != null))
                 {
-                    <td>@author.Description</td>
+                    <th>Описание</th>
                 }
-                <td>
-                    <div class="row float-right">
-                        <a class="btn btn-primary ml-3" asp-action="ChangeAuthor" asp-route-authorId="@author.Id">Изменить</a>
-                        <a class="btn btn-danger ml-3 mr-5" type="submit" asp-action="RemoveAuthor" asp-route-authorId="@author.Id">Удалить</a>
-                    </div>
-                </td>
+                @if (canChangeOrAddItems || canRemoveItems)
+                {
+                    <th class="text-center mr-5">Управление</th>
+                }
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var author in Model)
+            {
+                <tr>
+                    <td>@author.Id</td>
+                    <td class="text-center">@author.Name</td>
+                    @if (Model.Any(author => author.Description != null))
+                    {
+                        <td>@author.Description</td>
+                    }
+                    @if (canChangeOrAddItems || canRemoveItems)
+                    {
+                        <td>
+                            <div class="row justify-content-center">
+                                @if (canChangeOrAddItems)
+                                {
+                                    <a class="btn btn-primary ml-3" asp-action="ChangeAuthor" asp-route-authorId="@author.Id">Изменить</a>
+                                }
+                                @if (canRemoveItems)
+                                {
+                                    <a class="btn btn-danger ml-3 mr-5" type="submit" asp-action="RemoveAuthor" asp-route-authorId="@author.Id">Удалить</a>
+                                }
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-<div class="text-center mt-5">
-    <a class="btn-primary btn-lg" asp-action="AddAuthor">Добавить автора</a>
-</div>
+@if (canChangeOrAddItems)
+{
+    <div class="text-center mt-5">
+        <a class="btn-primary btn-lg" asp-action="AddAuthor">Добавить автора</a>
+    </div>
+}

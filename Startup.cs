@@ -33,17 +33,12 @@ namespace BooksStore
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("CanChangeItems",
+                options.AddPolicy("CanChangeOrAddItems",
                     policy => policy.RequireAssertion(x => x.User.HasClaim(ClaimsIdentity.DefaultRoleClaimType, "admin")
                                                         || x.User.HasClaim(ClaimsIdentity.DefaultRoleClaimType, "manager")));
 
-                options.AddPolicy("CanRomoveItems",
+                options.AddPolicy("CanRemoveItems",
                     policy => policy.RequireClaim(ClaimsIdentity.DefaultRoleClaimType, "admin"));
-
-                options.AddPolicy("CanAddItems",
-                   policy => policy.RequireAssertion(x => x.User.HasClaim(ClaimsIdentity.DefaultRoleClaimType, "admin")
-                                                       || x.User.HasClaim(ClaimsIdentity.DefaultRoleClaimType, "manager")));
-
             });
         }
 

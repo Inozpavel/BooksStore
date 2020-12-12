@@ -1,6 +1,10 @@
 ﻿@model IEnumerable<BooksStore.Models.Book>
-@{ 
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
     ViewBag.Title = "Список всех книг";
+    bool canChangeOrAddItems = (await AuthorizationService.AuthorizeAsync(User, "CanChangeOrAddItems")).Succeeded;
+    bool canRemoveItems = (await AuthorizationService.AuthorizeAsync(User, "CanRemoveItems")).Succeeded;
 }
 
 <div class="btn-group ml-3 mt-3" role="group" aria-label="Basic example">
@@ -34,7 +38,10 @@ else
                 {
                     <th>Описание</th>
                 }
-                <th>Управление</th>
+                @if (canChangeOrAddItems || canRemoveItems)
+                {
+                    <th>Управление</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -49,17 +56,29 @@ else
                     {
                         <td>@book.Description</td>
                     }
-                <td>
-                    <div class="row">
-                        <a class="btn btn-primary ml-3" asp-action="ChangeBook" asp-route-bookId="@book.Id">Изменить</a>
-                        <a class="btn btn-danger ml-3" type="submit" asp-action="RemoveBook" asp-route-bookId="@book.Id">Удалить</a>
-                    </div>
-                </td>
+                    @if (canChangeOrAddItems || canRemoveItems)
+                    {
+                        <td>
+                            <div class="row justify-content-center">
+                                @if (canChangeOrAddItems)
+                                {
+                                    <a class="btn btn-primary ml-3" asp-action="ChangeBook" asp-route-bookId="@book.Id">Изменить</a>
+                                }
+                                @if (canRemoveItems)
+                                {
+                                    <a class="btn btn-danger ml-3" type="submit" asp-action="RemoveBook" asp-route-bookId="@book.Id">Удалить</a>
+                                }
+                            </div>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
 }
-<div class="text-center mt-5">
-    <a class="btn-primary btn-lg" asp-action="AddBook">Добавить книгу</a>
-</div>
+@if (canChangeOrAddItems)
+{
+    <div class="text-center mt-5">
+        <a class="btn-primary btn-lg" asp-action="AddBook">Добавить книгу</a>
+    </div>
+}
