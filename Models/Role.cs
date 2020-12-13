@@ -16,5 +16,7 @@ namespace BooksStore.Models
         {
             Users = new List<User>();
         }
+
+        public Role(string name) => Name = name;
     }
 }

@@ -1,24 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BooksStore.Models
 {
     public interface IStoreRepository
     {
-        public IEnumerable<Book> Books { get; }
+        public IQueryable<Book> Books { get; }
 
-        public IEnumerable<Category> Categories { get; }
+        public IQueryable<Category> Categories { get; }
 
-        public IEnumerable<Author> Authors { get; }
+        public IQueryable<Author> Authors { get; }
 
         public IEnumerable<Author> AuthorsOrderedByName { get; }
 
         public IEnumerable<Category> CategoriesOrderedByName { get; }
 
-        public IEnumerable<Role> Roles { get; }
+        public IQueryable<Role> Roles { get; }
 
-        public IEnumerable<User> Users { get; }
+        public IQueryable<User> Users { get; }
 
-        public IEnumerable<ProductImage> Images { get; }
+        public IQueryable<ProductImage> Images { get; }
 
         User FindUser(int userId);
 

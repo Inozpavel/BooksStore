@@ -97,7 +97,7 @@ namespace BooksStore.Controllers
             user.Password = userToUpdate?.Password;
             if (TryValidateModel(user) == false)
                 return View(user);
-            
+
             userToUpdate.Name = user.Name;
             userToUpdate.SecondName = user.SecondName;
             userToUpdate.Email = user.Email;
@@ -105,7 +105,8 @@ namespace BooksStore.Controllers
 
             _repository.UpdateUser(userToUpdate);
             TempData["UpdateMessage"] = "Информация была успешно обновлена!";
-            await Authenticate(userToUpdate);
+            if (HttpContext != null)
+                await Authenticate(userToUpdate);
             return View(user);
         }
 

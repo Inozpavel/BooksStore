@@ -75,7 +75,7 @@ namespace BooksStore.Controllers
                     return ShowView("ChangeOrAddCategory", "Добавление жанра", category, "Добавить");
                 }
                 _repository.AddCategory(category);
-                return RedirectToActionPermanent("AllCategories");
+                return RedirectToAction("AllCategories");
             }
             else
                 return ShowView("ChangeOrAddCategory", "Добавление жанра", category, "Добавить");

@@ -9,43 +9,43 @@ namespace BooksStore.Models
     {
         private readonly StoreContext _context;
 
-        public IEnumerable<Book> Books => _context.Books.Include(x => x.Author).Include(x => x.Category).ToList();
+        public IQueryable<Book> Books => _context.Books.Include(x => x.Author).Include(x => x.Category);
 
-        public IEnumerable<Author> Authors => _context.Authors.ToList();
+        public IQueryable<Author> Authors => _context.Authors;
 
-        public IEnumerable<Category> Categories => _context.Categories.ToList();
+        public IQueryable<Category> Categories => _context.Categories;
 
         public IEnumerable<Author> AuthorsOrderedByName => _context.Authors.OrderBy(author => author.Name).ToList();
 
         public IEnumerable<Category> CategoriesOrderedByName => _context.Categories.OrderBy(category => category.Name).ToList();
 
-        public IEnumerable<User> Users => _context.Users.ToList();
+        public IQueryable<User> Users => _context.Users;
 
-        public IEnumerable<Role> Roles => _context.Roles.ToList();
+        public IQueryable<Role> Roles => _context.Roles;
 
-        public IEnumerable<ProductImage> Images => _context.Images.ToList();
+        public IQueryable<ProductImage> Images => _context.Images;
 
         public EFStoreRepository(StoreContext context) => _context = context;
 
         #region Find
 
-        public User FindUser(int userId) => _context.Users.Include(x => x.Role).FirstOrDefault(user => user.Id == userId);
+        public User FindUser(int userId) => Users.Include(x => x.Role).FirstOrDefault(user => user.Id == userId);
 
-        public User FindUser(string email, string password) => _context.Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email && user.Password == password);
+        public User FindUser(string email, string password) => Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email && user.Password == password);
 
-        public User FindUser(string email) => _context.Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email);
+        public User FindUser(string email) => Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email);
 
-        public Book FindBook(int bookId) => _context.Books.FirstOrDefault(book => book.Id == bookId);
+        public Book FindBook(int bookId) => Books.FirstOrDefault(book => book.Id == bookId);
 
-        public Author FindAuthor(int authorId) => _context.Authors.FirstOrDefault(author => author.Id == authorId);
+        public Author FindAuthor(int authorId) => Authors.FirstOrDefault(author => author.Id == authorId);
 
-        public Author FindAuthor(string authorName) => _context.Authors.FirstOrDefault(author => author.Name == authorName);
+        public Author FindAuthor(string authorName) => Authors.FirstOrDefault(author => author.Name == authorName);
 
-        public Category FindCategory(int categoryId) => _context.Categories.FirstOrDefault(category => category.Id == categoryId);
+        public Category FindCategory(int categoryId) => Categories.FirstOrDefault(category => category.Id == categoryId);
 
-        public Category FindCategory(string categoryName) => _context.Categories.FirstOrDefault(category => category.Name == categoryName);
+        public Category FindCategory(string categoryName) => Categories.FirstOrDefault(category => category.Name == categoryName);
 
-        public Role FindRole(string roleName) => _context.Roles.FirstOrDefault(role => role.Name == roleName);
+        public Role FindRole(string roleName) => Roles.FirstOrDefault(role => role.Name == roleName);
 
         #endregion
 
