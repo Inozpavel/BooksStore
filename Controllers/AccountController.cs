@@ -63,7 +63,8 @@ namespace BooksStore.Controllers
 
             _repository.AddUser(user);
 
-            await Authenticate(user);
+            if (HttpContext != null)
+                await Authenticate(user);
             return RedirectToAction("Index", "Store");
         }
 
