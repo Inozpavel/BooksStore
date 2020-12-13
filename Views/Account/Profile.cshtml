@@ -15,47 +15,50 @@ else
 
 <ul class="cabinet-nav">
     <li class="cabinet-nav-link selected">
-        <a asp-action="Profile">Мой профиль</a>
+        <a asp-action="Profile" class="nav-link">Мой профиль</a>
     </li>
     <li class="cabinet-nav-link">
-        <a asp-action="Orders">Мои заказы</a>
+        <a asp-action="Orders" class="nav-link">Мои заказы</a>
     </li>
     <li class="cabinet-nav-link">
-        <a asp-action="Settings">Настройки</a>
+        <a asp-action="Settings" class="nav-link">Настройки</a>
     </li>
 </ul>
 
 <div class="user-data-card">
     <form method="post">
-        <span>Личные данные</span>
-        <div class="form-group">
+        <h5>Личные данные</h5>
+        <div class="form-group mt-2">
             <label asp-for="Name"></label>
             <input asp-for="Name" value="@Model.Name" class="form-control" />
             <span class="text-danger small" asp-validation-for="Name"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label asp-for="SecondName"></label>
             <input asp-for="SecondName" value="@Model.SecondName" class="form-control" />
             <span class="text-danger small" asp-validation-for="SecondName"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label asp-for="Email"></label>
             <input asp-for="Email" value="@Model.Email" class="form-control" />
             <span class="text-danger small" asp-validation-for="Email"></span>
         </div>
-        <div class="form-group">
-            <label asp-for="SecondName"></label>
-            <input asp-for="SecondName" value="@Model.SecondName" class="form-control" />
-            <span class="text-danger small" asp-validation-for="SecondName"></span>
+        <div class="form-group mt-2">
+            <label asp-for="Phone"></label>
+            <input asp-for="Phone" value="@Model.Phone" class="form-control" />
+            <span class="text-danger small" asp-validation-for="Phone"></span>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-2">
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </div>
     </form>
 </div>
 @if (TempData["UpdateMessage"] != null)
 {
-    <div class="alert alert-success mt-5">@TempData["UpdateMessage"] </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <span>@TempData["UpdateMessage"]</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 <script src="~/js/InputsValidation.js" asp-append-version="true"></script>

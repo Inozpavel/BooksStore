@@ -6,6 +6,10 @@
     color: white;
 }
 
+span {
+    color: black;
+}
+
 #search-field {
     border-color: #CCCCCC;
 }
@@ -14,7 +18,7 @@ header, footer {
     background-color: #191A1B
 }
 
-input {
+input, select {
     background-color: #121212 !important;
     color: #C8C8C8 !important;
 }

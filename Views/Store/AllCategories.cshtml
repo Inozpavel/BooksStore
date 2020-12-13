@@ -7,7 +7,7 @@
     bool canRemoveItems = (await AuthorizationService.AuthorizeAsync(User, "CanRemoveItems")).Succeeded;
 }
 
-<div class="btn-group ml-3 mt-3" role="group" aria-label="Basic example">
+<div class="btn-group ms-3 mt-3" role="group" aria-label="Basic example">
     <a class="btn btn-secondary" asp-action="AllBooks">Книги</a>
     <a class="btn btn-secondary" asp-action="AllAuthors">Авторы</a>
     <a class="btn btn-warning active" asp-action="AllCategories">Жанры</a>
@@ -17,7 +17,10 @@
 </div>
 @if (TempData["DeletedElementMessage"] != null)
 {
-    <div class="alert alert-success">@TempData["DeletedElementMessage"] </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <span>@TempData["DeletedElementMessage"]</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 @if (Model.Any() == false)
 {
@@ -55,14 +58,14 @@ else
                     @if (canChangeOrAddItems || canRemoveItems)
                     {
                         <td>
-                            <div class="row justify-content-center">
+                            <div class="row g-2">
                                 @if (canChangeOrAddItems)
                                 {
-                                    <a class="btn btn-primary ml-3" asp-action="ChangeCategory" asp-route-categoryId="@category.Id">Изменить</a>
+                                    <a class="btn btn-primary me-2 ms-2 col" asp-action="ChangeCategory" asp-route-categoryId="@category.Id">Изменить</a>
                                 }
                                 @if (canRemoveItems)
                                 {
-                                    <a class="btn btn-danger ml-3 mr-5" type="submit" asp-action="RemoveCategory" asp-route-categoryId="@category.Id">Удалить</a>
+                                    <a class="btn btn-danger me-2 ms-2 col" type="submit" asp-action="RemoveCategory" asp-route-categoryId="@category.Id">Удалить</a>
                                 }
                             </div>
                         </td>
@@ -75,6 +78,6 @@ else
 @if (canChangeOrAddItems || canRemoveItems)
 {
     <div class="text-center mt-5">
-        <a class="btn-primary btn-lg" asp-action="AddCategory">Добавить жанр</a>
+        <a class="btn-primary btn-lg nav-link" asp-action="AddCategory">Добавить жанр</a>
     </div>
 }
