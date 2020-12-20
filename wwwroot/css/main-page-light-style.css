@@ -25,5 +25,9 @@ input, select {
 
 input:focus {
     color: black !important;
-} 
+}
+
+.card, .list-group-item {
+    background-color: #f8f9fa !important;
+}
 

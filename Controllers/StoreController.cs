@@ -1,7 +1,13 @@
 ﻿using BooksStore.Models;
 using BooksStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace BooksStore.Controllers
 {
@@ -12,7 +18,19 @@ namespace BooksStore.Controllers
         public StoreController(IStoreRepository repository) => _repository = repository;
 
         [HttpGet]
-        public ViewResult Index() => View();
+        public ViewResult Index() => View(_repository.Books.Include(x => x.BookImages).ToList());
+
+        [HttpGet]
+        public FileContentResult GetImage(int imageId)
+        {
+            var image = _repository.FindImage(imageId);
+
+            if (image != null)
+                return File(image, "image/jpg");
+            else
+                return File(System.IO.File.ReadAllBytes("./wwwroot/images/NotFound.jpg"), "image/jpg");
+        }
+
 
         [HttpGet]
         public ViewResult AllBooks() => View(_repository.Books);
@@ -22,6 +40,13 @@ namespace BooksStore.Controllers
 
         [HttpGet]
         public ViewResult AllCategories() => View(_repository.Categories);
+
+        [HttpGet]
+        public IActionResult Book(int bookId)
+        {
+            Book book = _repository.FindBook(bookId);
+            return book != null ? View(book) : NotFound();
+        }
 
         #region Add
 
@@ -130,6 +155,22 @@ namespace BooksStore.Controllers
             if (ModelState.IsValid)
             {
                 Book book = model.Book;
+                book.BookImages = _repository.FindImages(book.Id) ?? new List<ProductImage>();
+
+                List<byte[]> existingImages = book.BookImages.Select(x => x.Image).ToList();
+                byte[] imageBytes;
+                foreach (var image in model.UploadedImages ?? new List<IFormFile>())
+                {
+                    using var reader = new BinaryReader(image.OpenReadStream());
+                    imageBytes = reader.ReadBytes((int)image.Length);
+                    if (existingImages.Any(x => x.SequenceEqual(imageBytes)))
+                        continue;
+                    book.BookImages.Add(new ProductImage()
+                    {
+                        Image = imageBytes
+                    });
+                }
+
                 book.Author = _repository.FindAuthor(book.Author.Name);
                 book.Category = _repository.FindCategory(book.Category.Name);
                 _repository.UpdateBook(book);
@@ -223,6 +264,5 @@ namespace BooksStore.Controllers
             ViewBag.ButtonText = buttonText;
             return View(viewName, model);
         }
-
     }
 }

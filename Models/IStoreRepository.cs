@@ -37,6 +37,10 @@ namespace BooksStore.Models
 
         Category FindCategory(string categoryName);
 
+        byte[] FindImage(int imageId);
+
+        List<ProductImage> FindImages(int bookId);
+
         Role FindRole(string roleName);
 
         void AddBook(Book book);

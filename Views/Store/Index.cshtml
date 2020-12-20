@@ -1,6 +1,7 @@
-﻿@{
+﻿@model IEnumerable<BooksStore.Models.Book>
+@{
     ViewBag.Title = "BooksStore";
-}   
+}
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -37,3 +38,28 @@
     <a class="nav-link" asp-action="AllAuthors">Список всех авторов</a>
     <a class="nav-link" asp-action="AllCategories">Список всех жанров</a>
 </nav>
+
+<div class="row row-cols-3 g-4 me-4 ms-4">
+    @foreach (var book in Model)
+    {
+    <div class="col">
+        <a asp-action="Book" asp-route-bookId="@book.Id" class="nav-link card-nav">
+
+            <div class="card h-100 w-75 align-self-center">
+                <img src="@Url.Action("GetImage", "Store", new { imageId = book.BookImages.FirstOrDefault()?.Id ?? -1 })" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">@book.Name</h5>
+
+                </div>
+                <ul class="list-group list-group-flush text-end">
+                    <li class="list-group-item">@book.Author?.Name</li>
+                    <li class="list-group-item">@book.Category?.Name</li>
+                </ul>
+                <div class="card-footer">
+                    <p class="card-text">@book.Price.ToString("c")</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    }
+</div>

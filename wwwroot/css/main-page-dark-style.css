@@ -34,3 +34,7 @@ input:focus {
 a:hover {
     color: white !important;
 }
+
+.card, .list-group-item {
+    background-color: #212529 !important;
+}

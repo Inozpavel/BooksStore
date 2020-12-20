@@ -1,14 +1,19 @@
 ﻿@model BooksStore.ViewModels.BookInputViewModel
 
-<form method="post">
-    <input asp-for="@Model.Book.Id" type="hidden" value="@Model.Book.Id"/>
-    <div class="form-group ml-2 mr-2">
-        <label class="ml-1" asp-for="@Model.Book.Name"></label>
-        <input asp-for="@Model.Book.Name" class="form-control" type="text" value="@Model.Book.Name" autofocus/>
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="@Model.Book.Id" type="hidden" value="@Model.Book.Id" />
+    <div class="form-group ms-2 me-2">
+        <label class="ms-1" asp-for="@Model.Book.Name"></label>
+        <input asp-for="@Model.Book.Name" class="form-control" type="text" value="@Model.Book.Name" autofocus />
         <span class="text-danger small" asp-validation-for="@Model.Book.Name"></span>
     </div>
-    <div class="form-group ml-2 mr-2">
-        <label class="ml-1" asp-for="@Model.Book.Author.Name"></label>
+    <div class="form-group ms-2 me-2">
+        <label class="ms-1" asp-for="@Model.Book.Price"></label>
+        <input asp-for="@Model.Book.Price" class="form-control" type="text" value="@Model.Book.Price" autofocus />
+        <span class="text-danger small" asp-validation-for="@Model.Book.Price"></span>
+    </div>
+    <div class="form-group ms-2 me-2">
+        <label class="ms-1" asp-for="@Model.Book.Author.Name"></label>
         <select class="form-control" asp-for="@Model.Book.Author.Name">
             @if (string.IsNullOrEmpty(Model.Book.Author.Name))
             {
@@ -28,9 +33,9 @@
         </select>
         <span class="text-danger small" asp-validation-for="@Model.Book.Author.Name"></span>
     </div>
-   
-    <div class="form-group ml-2 mr-2">
-        <label class="ml-1" asp-for="@Model.Book.Category.Name"></label>
+
+    <div class="form-group ms-2 me-2">
+        <label class="ms-1" asp-for="@Model.Book.Category.Name"></label>
         <select class="form-control" asp-for="@Model.Book.Category.Name">
             @if (string.IsNullOrEmpty(Model.Book.Category.Name))
             {
@@ -50,13 +55,17 @@
         </select>
         <span class="text-danger small" asp-validation-for="@Model.Book.Category.Name"></span>
     </div>
-    <div class="form-group ml-2 mr-2">
+    <div class="mb-3 ms-2 me-2">
+        <label asp-for="@Model.UploadedImages" class="form-label">Изображения книги</label>
+        <input asp-for="@Model.UploadedImages" class="form-control" type="file" multiple accept=".jpg, .jpeg, .png" value="@Model.UploadedImages">
+    </div>
+    <div class="form-group ms-2 me-2">
         <label class="ml-1" asp-for="@Model.Book.Description"></label>
         <input asp-for="@Model.Book.Description" class="form-control" type="text" value="@Model.Book.Description"/>
     </div>
 
-    <div class="row mt-3 ml-2 mr-2">
-        <button class="btn ml-3 btn-lg btn-primary"type="submit">@ViewBag.ButtonText</button>
+    <div class="row mt-3 ms-2 me-2">
+        <button class="btn ml-3 btn-lg btn-primary" type="submit">@ViewBag.ButtonText</button>
         <a class="btn ml-3 btn-lg btn-outline-warning" asp-action="AllBooks">Отменить</a>
     </div>
 </form>

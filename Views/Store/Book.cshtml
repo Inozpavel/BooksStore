@@ -1,0 +1,32 @@
+﻿@model BooksStore.Models.Book
+<div class="row m-5">
+    <div class="col">
+        <div class="row" >
+            @foreach (var image in Model.BookImages ?? new List<BooksStore.Models.ProductImage>())
+            {
+                <img src="@Url.Action("GetImage", "Store", new { imageId = image.Id })" class="col w-25 h-25">
+            }
+        </div>
+    </div>
+    <div class="col">
+        <h>@Model.Name</h>
+        @if (string.IsNullOrWhiteSpace(Model.Description) == false)
+        {
+            <p>@Model.Description</p>
+        }
+        <p>Жанр: @Model.Category.Name</p>
+        <p>Автор: @Model.Author.Name</p>
+        <p>Цена: @Model.Price</p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a class="btn btn-primary mt-3" href="#">Добавить в корзину</a>
+        }
+        else
+        {
+            <p class="text-info">Для добавления товара в корзину войдите в аккаунт или создайте его</p>
+        }
+    </div>
+</div>
+
+
+

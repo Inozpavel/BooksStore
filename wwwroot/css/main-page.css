@@ -44,7 +44,7 @@ main {
     background-color: transparent;
 }
 
-.theme-image {
+.theme-image, .cart-image {
     height: 33px;
     width: 33px;
 }
@@ -65,4 +65,8 @@ footer {
 input {
     font-size: 16px;
     font-weight: 400;
+}
+
+a.card-nav {
+    display: initial;
 }

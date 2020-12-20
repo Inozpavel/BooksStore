@@ -35,7 +35,7 @@ namespace BooksStore.Models
 
         public User FindUser(string email) => Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email);
 
-        public Book FindBook(int bookId) => Books.FirstOrDefault(book => book.Id == bookId);
+        public Book FindBook(int bookId) => Books.Include(x => x.BookImages).FirstOrDefault(book => book.Id == bookId);
 
         public Author FindAuthor(int authorId) => Authors.FirstOrDefault(author => author.Id == authorId);
 
@@ -46,6 +46,10 @@ namespace BooksStore.Models
         public Category FindCategory(string categoryName) => Categories.FirstOrDefault(category => category.Name == categoryName);
 
         public Role FindRole(string roleName) => Roles.FirstOrDefault(role => role.Name == roleName);
+
+        public byte[] FindImage(int imageId) => Images.FirstOrDefault(image => image.Id == imageId)?.Image;
+
+        public List<ProductImage> FindImages(int bookId) => Images.Where(x => x.BookId == bookId).ToList();
 
         #endregion
 

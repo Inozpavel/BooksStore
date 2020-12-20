@@ -1,4 +1,5 @@
 ﻿using BooksStore.Models;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
 namespace BooksStore.ViewModels
@@ -10,5 +11,7 @@ namespace BooksStore.ViewModels
         public IEnumerable<Category> Categories { get; set; }
 
         public IEnumerable<Author> Authors { get; set; }
+
+        public IEnumerable<IFormFile> UploadedImages { get; set; }
     }
 }

@@ -30,6 +30,9 @@
                 </form>
                 @if (User.Identity.IsAuthenticated)
                 {
+                    <a asp-action="Cart" asp-route-email="@User.Identity.Name">
+                        <img src="~/images/cart.svg" class="cart-image me-3" />
+                    </a>
                     if (Context.Request.Cookies["Theme"] == "Dark")
                     {
                         <a asp-action="ChangeTheme" asp-controller="Account" asp-route-themeName="Light" asp-route-returnUrl="@Context.Request.Path" asp-route-parameters="@Context.Request.QueryString" class="theme-link me-2">
@@ -86,7 +89,7 @@
                 </a>
             </div>
             <div class="col-3">
-                <h5 >Каталог</h5>
+                <h5>Каталог</h5>
                 <a class="nav-link">О нас</a>
                 <a class="nav-link">Доставка и оплата</a>
                 <a class="nav-link">Контакты</a>
