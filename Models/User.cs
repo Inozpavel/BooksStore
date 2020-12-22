@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,5 +25,7 @@ namespace BooksStore.Models
         public int RoleId { get; set; }
 
         public Role Role { get; set; }
+
+        public List<CartItem> CartItems { get; set; }
     }
 }
