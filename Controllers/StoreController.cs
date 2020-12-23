@@ -48,6 +48,9 @@ namespace BooksStore.Controllers
             return book != null ? View(book) : NotFound();
         }
 
+        [HttpGet]
+        public IActionResult FindBooks(string searchOption) => View("Index", _repository.FindBooks(searchOption));
+
         #region Add
 
         [HttpGet]

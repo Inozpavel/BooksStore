@@ -33,6 +33,8 @@ namespace BooksStore.Models
 
         Book FindBook(int bookId);
 
+        IEnumerable<Book> FindBooks(string searchOption);
+
         Author FindAuthor(int authorId);
 
         Author FindAuthor(string authorName);

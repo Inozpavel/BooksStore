@@ -24,8 +24,8 @@
                 <a asp-action="Index" asp-controller="Store" class="me-auto">
                     <h1 class="brand">BooksMarket</h1>
                 </a>
-                <form class="d-flex me-2">
-                    <input class="form-control me-2" id="search-field" placeholder="Найти книгу">
+                <form class="d-flex me-2" method="get" asp-controller="Store" asp-action="FindBooks">
+                    <input name="searchOption" class="form-control me-2" id="search-field" type="text" placeholder="Найти книгу">
                     <button class="btn btn-outline-success ml-2" type="submit">Поиск</button>
                 </form>
                 @if (User.Identity.IsAuthenticated)

@@ -39,6 +39,8 @@ namespace BooksStore.Models
 
         public Book FindBook(int bookId) => Books.Include(x => x.BookImages).FirstOrDefault(book => book.Id == bookId);
 
+        public IEnumerable<Book> FindBooks(string searchOption) => Books.Include(x => x.BookImages).Where(book => book.Name.Contains(searchOption) || book.Author.Name.Contains(searchOption)).ToList();
+
         public Author FindAuthor(int authorId) => Authors.FirstOrDefault(author => author.Id == authorId);
 
         public Author FindAuthor(string authorName) => Authors.FirstOrDefault(author => author.Name == authorName);
