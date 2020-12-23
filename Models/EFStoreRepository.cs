@@ -57,52 +57,23 @@ namespace BooksStore.Models
 
         public void AddBook(Book book)
         {
-            _context.Add(new Book()
-            {
-                Name = book.Name,
-                Author = FindAuthor(book.Author.Name) ?? book.Author,
-                Category = FindCategory(book.Category.Name) ?? book.Category,
-                Description = book.Description
-            });
+            book.Author = FindAuthor(book.Author.Name) ?? book.Author;
+            book.Category = FindCategory(book.Category.Name) ?? book.Category;
+            _context.Add(book);
             _context.SaveChanges();
         }
 
-        public void AddBooksRange(params Book[] books)
-        {
-            foreach (var book in books)
-            {
-                AddBook(book);
-            }
-        }
+        public void AddBooksRange(params Book[] books) => books.ToList().ForEach(book => AddBook(book));
 
         public void AddAuthor(Author author)
         {
             _context.Authors.Add(author);
-            _context.SaveChanges();
-
-        }
-
-        public void AddAuthor(string authorName)
-        {
-            _context.Authors.Add(new Author()
-            {
-                Name = authorName
-            });
             _context.SaveChanges();
         }
 
         public void AddCategory(Category category)
         {
             _context.Categories.Add(category);
-            _context.SaveChanges();
-        }
-
-        public void AddCategory(string categoryName)
-        {
-            _context.Categories.Add(new Category()
-            {
-                Name = categoryName
-            });
             _context.SaveChanges();
         }
 

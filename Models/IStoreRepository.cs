@@ -21,6 +21,8 @@ namespace BooksStore.Models
 
         public IQueryable<ProductImage> Images { get; }
 
+        #region Find
+
         User FindUser(int userId);
 
         User FindUser(string email, string password);
@@ -43,21 +45,25 @@ namespace BooksStore.Models
 
         Role FindRole(string roleName);
 
+        #endregion
+
+        #region Add
+
         void AddBook(Book book);
 
         void AddAuthor(Author author);
 
-        void AddAuthor(string authorName);
-
         void AddCategory(Category category);
-
-        void AddCategory(string categoryName);
 
         void AddBooksRange(params Book[] books);
 
         void AddUser(User user);
 
         void AddRole(Role role);
+
+        #endregion
+
+        #region Remove
 
         INameable RemoveBook(Book book);
 
@@ -67,6 +73,10 @@ namespace BooksStore.Models
 
         INameable Remove<T>(T element) where T : INameable;
 
+        #endregion
+
+        #region Update
+
         void UpdateBook(Book book);
 
         void UpdateCategory(Category category);
@@ -74,6 +84,8 @@ namespace BooksStore.Models
         void UpdateAuthor(Author author);
 
         void UpdateUser(User user);
+
+        #endregion
 
         bool CheckEmailAlreadyExists(string email);
     }
