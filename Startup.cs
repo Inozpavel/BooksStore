@@ -45,9 +45,7 @@ namespace BooksStore
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
                 app.UseStatusCodePages();
 
@@ -62,8 +60,10 @@ namespace BooksStore
                 routes.MapRoute("profile", "{controller=Account}/{action=Profile}");
             });
 
-            SeedData.EnsureBooksAdded(app);
             SeedData.EnsureRolesAdded(app);
+            SeedData.EnsureCategoriesAdded(app);
+            SeedData.EnsureAuthorsAdded(app);
+            SeedData.EnsureBooksAdded(app);
         }
     }
 }

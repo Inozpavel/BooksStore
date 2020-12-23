@@ -30,5 +30,14 @@ namespace BooksStore.Models
         [DisplayName("Описание книги")]
         public string Description { get; set; }
 
+        public Book()
+        {
+        }
+
+        public Book(string name, decimal price)
+        {
+            Name = name;
+            Price = price;
+        }
     }
 }
