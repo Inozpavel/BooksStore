@@ -21,6 +21,8 @@ namespace BooksStore.Models
 
         public IQueryable<ProductImage> Images { get; }
 
+        public IQueryable<CartItem> CartItems { get; }
+
         #region Find
 
         User FindUser(int userId);
@@ -45,21 +47,31 @@ namespace BooksStore.Models
 
         Role FindRole(string roleName);
 
+        CartItem FindCartItem(int userId, int bookId);
+
+        IEnumerable<CartItem> FindCartItems(int userId);
+
         #endregion
 
         #region Add
 
         void AddBook(Book book);
 
+        void AddBooksRange(params Book[] books);
+
         void AddAuthor(Author author);
+
+        void AddAuthorsRange(params Author[] authors);
 
         void AddCategory(Category category);
 
-        void AddBooksRange(params Book[] books);
+        void AddCategoriesRange(params Category[] categories);
 
         void AddUser(User user);
 
         void AddRole(Role role);
+
+        void AddCartItem(CartItem cartItem);
 
         #endregion
 
@@ -70,6 +82,10 @@ namespace BooksStore.Models
         INameable RemoveCategory(Category category);
 
         INameable RemoveAuthor(Author author);
+
+        void RemoveCartItem(CartItem cartItem);
+
+        void RemoveCartItems(int userId);
 
         INameable Remove<T>(T element) where T : INameable;
 
@@ -84,6 +100,8 @@ namespace BooksStore.Models
         void UpdateAuthor(Author author);
 
         void UpdateUser(User user);
+
+        void UpdateCartItem(CartItem cartItem);
 
         #endregion
 

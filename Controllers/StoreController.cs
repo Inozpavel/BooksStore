@@ -85,6 +85,33 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        public IActionResult AddToCart(int bookId, string returnUrl = null, string query = null)
+        {
+            if (_repository.FindBook(bookId) == null)
+                return NotFound();
+            User user = _repository.FindUser(User.Identity.Name);
+            CartItem item = _repository.FindCartItem(user.Id, bookId);
+            if (item != null)
+            {
+                item.Count++;
+                _repository.UpdateCartItem(item);
+                ViewBag.CartMessage = "Еще один товар успешно добавлен в корзину!";
+            }
+            else
+            {
+                _repository.AddCartItem(new CartItem()
+                {
+                    BookId = bookId,
+                    UserId = user.Id,
+                    Count = 1
+                });
+                ViewBag.CartMessage = "Новый товар успешно добавлен в корзину!";
+            }
+            return Redirect(returnUrl + query);
+        }
+
+        [HttpGet]
         [Authorize(Policy = "CanChangeOrAddItems")]
         public ViewResult AddCategory() => ShowView("ChangeOrAddCategory", "Добавление жанра", new Category(), "Добавить");
 
@@ -237,6 +264,48 @@ namespace BooksStore.Controllers
         #endregion
 
         #region Remove
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult DecreaseCartItemCount(int bookId, string returnUrl = null, string query = null)
+        {
+            if (_repository.FindBook(bookId) == null)
+                return NotFound();
+            User user = _repository.FindUser(User.Identity.Name);
+            CartItem item = _repository.FindCartItem(user.Id, bookId);
+            if (item != null)
+            {
+                item.Count--;
+                if (item.Count > 0)
+                    _repository.UpdateCartItem(item);
+                else
+                    _repository.RemoveCartItem(item);
+            }
+            return Redirect(returnUrl + query);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult RemoveCartItem(int bookId, string returnUrl = null, string query = null)
+        {
+            if (_repository.FindBook(bookId) == null)
+                return NotFound();
+            User user = _repository.FindUser(User.Identity.Name);
+            CartItem item = _repository.FindCartItem(user.Id, bookId);
+            if (item != null)
+                _repository.RemoveCartItem(item);
+
+            return Redirect(returnUrl + query);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult RemoveAllItemsFromCart(string returnUrl = null, string query = null)
+        {
+            User user = _repository.FindUser(User.Identity.Name);
+            _repository.RemoveCartItems(user.Id);
+            return Redirect(returnUrl + query);
+        }
 
         [HttpGet]
         [Authorize(Policy = "CanRemoveItems")]

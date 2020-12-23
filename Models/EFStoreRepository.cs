@@ -25,6 +25,8 @@ namespace BooksStore.Models
 
         public IQueryable<ProductImage> Images => _context.Images;
 
+        public IQueryable<CartItem> CartItems => _context.Carts;
+
         public EFStoreRepository(StoreContext context) => _context = context;
 
         #region Find
@@ -33,7 +35,7 @@ namespace BooksStore.Models
 
         public User FindUser(string email, string password) => Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email && user.Password == password);
 
-        public User FindUser(string email) => Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email);
+        public User FindUser(string email) => Users.Include(x => x.Role).Include(x => x.CartItems).FirstOrDefault(user => user.Email == email);
 
         public Book FindBook(int bookId) => Books.Include(x => x.BookImages).FirstOrDefault(book => book.Id == bookId);
 
@@ -50,6 +52,10 @@ namespace BooksStore.Models
         public byte[] FindImage(int imageId) => Images.FirstOrDefault(image => image.Id == imageId)?.Image;
 
         public List<ProductImage> FindImages(int bookId) => Images.Where(x => x.BookId == bookId).ToList();
+
+        public CartItem FindCartItem(int userId, int bookId) => CartItems.FirstOrDefault(item => item.UserId == userId && item.BookId == bookId);
+
+        public IEnumerable<CartItem> FindCartItems(int userId) => CartItems.Include(x => x.Book).Where(item => item.UserId == userId).ToList();
 
         #endregion
 
@@ -71,11 +77,15 @@ namespace BooksStore.Models
             _context.SaveChanges();
         }
 
+        public void AddAuthorsRange(params Author[] authors) => authors.ToList().ForEach(author => AddAuthor(author));
+
         public void AddCategory(Category category)
         {
             _context.Categories.Add(category);
             _context.SaveChanges();
         }
+
+        public void AddCategoriesRange(params Category[] categories) => categories.ToList().ForEach(category => AddCategory(category));
 
         public void AddUser(User user)
         {
@@ -86,6 +96,12 @@ namespace BooksStore.Models
         public void AddRole(Role role)
         {
             _context.Roles.Add(role);
+            _context.SaveChanges();
+        }
+
+        public void AddCartItem(CartItem cartItem)
+        {
+            _context.Carts.Add(cartItem);
             _context.SaveChanges();
         }
 
@@ -117,6 +133,12 @@ namespace BooksStore.Models
             _context.SaveChanges();
         }
 
+        public void UpdateCartItem(CartItem cartItem)
+        {
+            _context.Carts.Update(cartItem);
+            _context.SaveChanges();
+        }
+
         #endregion
 
         #region Remove
@@ -140,6 +162,20 @@ namespace BooksStore.Models
             _context.Authors.Remove(author);
             _context.SaveChanges();
             return author;
+        }
+
+        public void RemoveCartItem(CartItem cartItem)
+        {
+            _context.Carts.Remove(cartItem);
+            _context.SaveChanges();
+        }
+
+        public void RemoveCartItems(int userId)
+        {
+            List<CartItem> items = _context.Carts.ToList();
+            foreach (var item in items)
+                _context.Carts.Remove(item);
+            _context.SaveChanges();
         }
 
         public INameable Remove<T>(T element) where T : INameable

@@ -1,7 +1,7 @@
 ﻿@model BooksStore.Models.Book
 <div class="row m-5">
     <div class="col">
-        <div class="row" >
+        <div class="row">
             @foreach (var image in Model.BookImages ?? new List<BooksStore.Models.ProductImage>())
             {
                 <img src="@Url.Action("GetImage", "Store", new { imageId = image.Id })" class="col w-25 h-25">
@@ -19,7 +19,7 @@
         <p>Цена: @Model.Price</p>
         @if (User.Identity.IsAuthenticated)
         {
-            <a class="btn btn-primary mt-3" href="#">Добавить в корзину</a>
+            <a class="btn btn-primary mt-3" asp-action="AddToCart" asp-route-bookId="@Model.Id" asp-route-returnUrl="@Context.Request.Path" asp-route-query="@Context.Request.QueryString">Добавить в корзину</a>
         }
         else
         {
@@ -27,6 +27,13 @@
         }
     </div>
 </div>
+@if (ViewBag.CartMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <span>@ViewBag.CartMessage</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
 
 

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<BooksStore.Models.CartItem>
+@{
+    Layout = "_MainPage";
+}
+<div class="text-center mt-3">
+    <h1>Ваша корзина</h1>
+</div>
+@if (Model.ToList().Count == 0)
+{
+    <h3 class="text-info mt-5 mb-5 text-center">Ваша корзина пуста</h3>
+}
+else
+{
+    <table class="table">
+        <thead >
+            <tr>
+                <th>Название книги</th>
+                <th>Количество</th>
+                <th>Изменение</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Book.Name</td>
+                    <td>@item.Count</td>
+                    <td>
+                        <div class="row">
+                            <a class="btn btn-primary me-2 ms-2 col" asp-controller="Store" asp-action="AddToCart" asp-route-bookId="@item.Book.Id" asp-route-returnUrl="@Context.Request.Path" asp-route-query="@Context.Request.QueryString">Добавить</a>
+                            <a class="btn btn-primary me-2 ms-2 col" asp-controller="Store" asp-action="DecreaseCartItemCount" asp-route-bookId="@item.Book.Id" asp-route-returnUrl="@Context.Request.Path">Убрать</a>
+                            <a class="btn btn-danger me-2 ms-2 col" asp-controller="Store" asp-action="RemoveCartItem" asp-route-bookId="@item.Book.Id" asp-route-returnUrl="@Context.Request.Path">Удалить</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+    </table>
+    <a class="btn btn-danger ms-3" asp-controller="Store" asp-action="RemoveAllItemsFromCart" asp-route-returnUrl="@Context.Request.Path">Очистить корзину</a>
+}
+
+

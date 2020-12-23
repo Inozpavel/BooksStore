@@ -30,7 +30,7 @@
                 </form>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-action="Cart" asp-route-email="@User.Identity.Name">
+                    <a asp-action="Cart" asp-controller="Account">
                         <img src="~/images/cart.svg" class="cart-image me-3" />
                     </a>
                     if (Context.Request.Cookies["Theme"] == "Dark")
@@ -62,7 +62,6 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-3">
-                <h5>Каталог</h5>
                 <label>© BooksStore</label>
                 <p>2020 - 2020</p>
             </div>
