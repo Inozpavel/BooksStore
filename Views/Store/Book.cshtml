@@ -1,12 +1,21 @@
 ﻿@model BooksStore.Models.Book
 <div class="row m-5">
     <div class="col">
-        <div class="row">
-            @foreach (var image in Model.BookImages ?? new List<BooksStore.Models.ProductImage>())
-            {
-                <img src="@Url.Action("GetImage", "Store", new { imageId = image.Id })" class="col w-25 h-25">
-            }
-        </div>
+
+        @if (Model.BookImages?.Count > 0)
+        {
+            <div class="row">
+                @foreach (var image in Model.BookImages)
+                {
+                    <img src="@Url.Action("GetImage", "Store", new { imageId = image.Id })" class="col w-25 h-25">
+                }
+            </div>
+        }
+        else
+        {
+            <img src="~/images/NotFound.jpg" />
+        }
+
     </div>
     <div class="col">
         <h>@Model.Name</h>
