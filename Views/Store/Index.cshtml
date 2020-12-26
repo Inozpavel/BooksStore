@@ -33,11 +33,6 @@
         <span class="visually-hidden">Next</span>
     </a>
 </div>
-<nav class="nav flex-column">
-    <a class="nav-link" asp-action="AllBooks">Список всех книг</a>
-    <a class="nav-link" asp-action="AllAuthors">Список всех авторов</a>
-    <a class="nav-link" asp-action="AllCategories">Список всех жанров</a>
-</nav>
 
 <div class="row row-cols-3 g-4 me-4 ms-4">
     @foreach (var book in Model)
@@ -45,7 +40,7 @@
     <div class="col">
         <a asp-action="Book" asp-route-bookId="@book.Id" class="nav-link card-nav">
 
-            <div class="card h-100 w-75 align-self-center">
+            <div class="card h-100 w-75 ms-5">
                 <img src="@Url.Action("GetImage", "Store", new { imageId = book.BookImages.FirstOrDefault()?.Id ?? -1 })" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">@book.Name</h5>
