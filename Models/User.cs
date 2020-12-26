@@ -26,6 +26,6 @@ namespace BooksStore.Models
 
         public Role Role { get; set; }
 
-        public List<CartItem> CartItems { get; set; }
+        public List<CartItem> CartsItems { get; set; }
     }
 }

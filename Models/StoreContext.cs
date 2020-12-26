@@ -20,7 +20,7 @@ namespace BooksStore.Models
 
         public DbSet<ProductImage> Images { get; set; }
 
-        public DbSet<CartItem> Carts { get; set; }
+        public DbSet<CartItem> CartsItems { get; set; }
 
     }
 }

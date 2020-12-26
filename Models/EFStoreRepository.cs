@@ -25,7 +25,7 @@ namespace BooksStore.Models
 
         public IQueryable<ProductImage> Images => _context.Images;
 
-        public IQueryable<CartItem> CartItems => _context.Carts;
+        public IQueryable<CartItem> CartItems => _context.CartsItems;
 
         public EFStoreRepository(StoreContext context) => _context = context;
 
@@ -35,7 +35,7 @@ namespace BooksStore.Models
 
         public User FindUser(string email, string password) => Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email && user.Password == password);
 
-        public User FindUser(string email) => Users.Include(x => x.Role).Include(x => x.CartItems).FirstOrDefault(user => user.Email == email);
+        public User FindUser(string email) => Users.Include(x => x.Role).Include(x => x.CartsItems).FirstOrDefault(user => user.Email == email);
 
         public Book FindBook(int bookId) => Books.Include(x => x.BookImages).FirstOrDefault(book => book.Id == bookId);
 
@@ -103,7 +103,7 @@ namespace BooksStore.Models
 
         public void AddCartItem(CartItem cartItem)
         {
-            _context.Carts.Add(cartItem);
+            _context.CartsItems.Add(cartItem);
             _context.SaveChanges();
         }
 
@@ -137,7 +137,7 @@ namespace BooksStore.Models
 
         public void UpdateCartItem(CartItem cartItem)
         {
-            _context.Carts.Update(cartItem);
+            _context.CartsItems.Update(cartItem);
             _context.SaveChanges();
         }
 
@@ -168,15 +168,15 @@ namespace BooksStore.Models
 
         public void RemoveCartItem(CartItem cartItem)
         {
-            _context.Carts.Remove(cartItem);
+            _context.CartsItems.Remove(cartItem);
             _context.SaveChanges();
         }
 
         public void RemoveCartItems(int userId)
         {
-            List<CartItem> items = _context.Carts.ToList();
+            List<CartItem> items = _context.CartsItems.ToList();
             foreach (var item in items)
-                _context.Carts.Remove(item);
+                _context.CartsItems.Remove(item);
             _context.SaveChanges();
         }
 
