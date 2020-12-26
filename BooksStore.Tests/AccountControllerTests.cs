@@ -1,6 +1,5 @@
 ﻿using BooksStore.Controllers;
 using BooksStore.Models;
-using Microsoft.AspNetCore.Http;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +54,5 @@ namespace BooksStore.Tests
             });
             Assert.Equal(isModelValid, controller.ModelState.IsValid);
         }
-
     }
 }

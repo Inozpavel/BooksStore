@@ -79,7 +79,6 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public ViewResult Cart() => View(_repository.FindCartItems(_repository.FindUser(User.Identity.Name).Id));
 
         [HttpGet]
