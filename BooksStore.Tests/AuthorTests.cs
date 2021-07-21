@@ -8,12 +8,9 @@ namespace BooksStore.Tests
         [Fact]
         public void CanChangeAuthorName()
         {
-            Author author = new Author()
-            {
-                Name = "Пушкин А. С."
-            };
-            author.Name = "Толстой Л.Н.";
-            Assert.Equal("Толстой Л.Н.", author.Name);
+            var author = new Author {Name = "РџСѓС€РєРёРЅ Рђ. РЎ."};
+            author.Name = "РўРѕР»СЃС‚РѕР№ Р›.Рќ.";
+            Assert.Equal("РўРѕР»СЃС‚РѕР№ Р›.Рќ.", author.Name);
         }
     }
 }

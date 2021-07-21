@@ -3,14 +3,14 @@
     Layout = "_MainPage";
 }
 
-<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true"/>
 @if (Context.Request.Cookies["Theme"] == "Dark")
 {
-    <link rel="stylesheet" href="~/css/profile-dark.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/profile-dark.css" asp-append-version="true"/>
 }
 else
 {
-    <link rel="stylesheet" href="~/css/profile-light.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/profile-light.css" asp-append-version="true"/>
 }
 
 <ul class="cabinet-nav">
@@ -20,9 +20,6 @@ else
     <li class="cabinet-nav-link">
         <a asp-action="Cart" class="nav-link">Моя корзина</a>
     </li>
-    <li class="cabinet-nav-link">
-        <a asp-action="Settings" class="nav-link">Настройки</a>
-    </li>
 </ul>
 
 <div class="user-data-card">
@@ -30,22 +27,22 @@ else
         <h5>Личные данные</h5>
         <div class="form-group mt-2">
             <label asp-for="Name"></label>
-            <input asp-for="Name" value="@Model.Name" class="form-control" />
+            <input asp-for="Name" value="@Model.Name" class="form-control"/>
             <span class="text-danger small" asp-validation-for="Name"></span>
         </div>
         <div class="form-group mt-2">
             <label asp-for="SecondName"></label>
-            <input asp-for="SecondName" value="@Model.SecondName" class="form-control" />
+            <input asp-for="SecondName" value="@Model.SecondName" class="form-control"/>
             <span class="text-danger small" asp-validation-for="SecondName"></span>
         </div>
         <div class="form-group mt-2">
             <label asp-for="Email"></label>
-            <input asp-for="Email" value="@Model.Email" class="form-control" />
+            <input asp-for="Email" value="@Model.Email" class="form-control"/>
             <span class="text-danger small" asp-validation-for="Email"></span>
         </div>
         <div class="form-group mt-2">
             <label asp-for="Phone"></label>
-            <input asp-for="Phone" value="@Model.Phone" class="form-control" />
+            <input asp-for="Phone" value="@Model.Phone" class="form-control"/>
             <span class="text-danger small" asp-validation-for="Phone"></span>
         </div>
 

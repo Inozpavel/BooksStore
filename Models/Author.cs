@@ -5,6 +5,14 @@ namespace BooksStore.Models
 {
     public class Author : INameable
     {
+        public Author() : this("", null)
+        {
+        }
+
+        public Author(string name) => Name = name;
+
+        public Author(string name, string description) : this(name) => Description = description;
+
         public int Id { get; set; }
 
         [DisplayName("Имя автора")]
@@ -13,14 +21,6 @@ namespace BooksStore.Models
 
         [DisplayName("Описание автора")]
         public string Description { get; set; }
-
-        public Author() : this("", null)
-        {
-        }
-
-        public Author(string name) => Name = name;
-
-        public Author(string name, string description) : this(name) => Description = description;
 
         public override string ToString() => Name;
     }

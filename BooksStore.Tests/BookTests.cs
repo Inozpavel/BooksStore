@@ -8,10 +8,7 @@ namespace BooksStore.Tests
         [Fact]
         public void CanChangeBookName()
         {
-            Book book = new Book()
-            {
-                Name = "Сказка о царе Салтане"
-            };
+            var book = new Book {Name = "Сказка о царе Салтане"};
             book.Name = "У лукоморья дуб зеленый...";
             Assert.Equal("У лукоморья дуб зеленый...", book.Name);
         }

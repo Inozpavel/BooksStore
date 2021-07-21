@@ -8,10 +8,7 @@ namespace BooksStore.Tests
         [Fact]
         public void CanChangeCategoryName()
         {
-            Category category = new Category()
-            {
-                Name = "Сказки"
-            };
+            var category = new Category {Name = "Сказки"};
             category.Name = "Рассказы";
             Assert.Equal("Рассказы", category.Name);
         }

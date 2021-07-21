@@ -1,10 +1,10 @@
-﻿@model IEnumerable<BooksStore.Models.Category>
-@using Microsoft.AspNetCore.Authorization
-@inject IAuthorizationService AuthorizationService
+﻿@using Microsoft.AspNetCore.Authorization
+@model IEnumerable<BooksStore.Models.Category>
+@inject IAuthorizationService _authorizationService
 @{
     ViewBag.Title = "Список всех жанров";
-    bool canChangeOrAddItems = (await AuthorizationService.AuthorizeAsync(User, "CanChangeOrAddItems")).Succeeded;
-    bool canRemoveItems = (await AuthorizationService.AuthorizeAsync(User, "CanRemoveItems")).Succeeded;
+    bool canChangeOrAddItems = (await _authorizationService.AuthorizeAsync(User, "CanChangeOrAddItems")).Succeeded;
+    bool canRemoveItems = (await _authorizationService.AuthorizeAsync(User, "CanRemoveItems")).Succeeded;
 }
 
 <div class="btn-group ms-3 mt-3" role="group" aria-label="Basic example">
@@ -32,46 +32,46 @@ else
 {
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th class="text-center">Название</th>
+            @if (Model.Any(category => category.Description != null))
+            {
+                <th>Описание</th>
+            }
+            @if (canChangeOrAddItems || canRemoveItems)
+            {
+                <th class="text-center mr-5">Управление</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var category in Model)
+        {
             <tr>
-                <th>Id</th>
-                <th class="text-center">Название</th>
-                @if (Model.Any(category => category.Description != null))
+                <td>@category.Id</td>
+                <td class="text-center">@category.Name</td>
+                @if (Model.Any(c => c.Description != null))
                 {
-                    <th>Описание</th>
+                    <td>@category.Description</td>
                 }
                 @if (canChangeOrAddItems || canRemoveItems)
                 {
-                    <th class="text-center mr-5">Управление</th>
+                    <td>
+                        <div class="row g-2">
+                            @if (canChangeOrAddItems)
+                            {
+                                <a class="btn btn-primary me-2 ms-2 col" asp-action="ChangeCategory" asp-route-categoryId="@category.Id">Изменить</a>
+                            }
+                            @if (canRemoveItems)
+                            {
+                                <a class="btn btn-danger me-2 ms-2 col" type="submit" asp-action="RemoveCategory" asp-route-categoryId="@category.Id">Удалить</a>
+                            }
+                        </div>
+                    </td>
                 }
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var category in Model)
-            {
-                <tr>
-                    <td>@category.Id</td>
-                    <td class="text-center">@category.Name</td>
-                    @if (Model.Any(category => category.Description != null))
-                    {
-                        <td>@category.Description</td>
-                    }
-                    @if (canChangeOrAddItems || canRemoveItems)
-                    {
-                        <td>
-                            <div class="row g-2">
-                                @if (canChangeOrAddItems)
-                                {
-                                    <a class="btn btn-primary me-2 ms-2 col" asp-action="ChangeCategory" asp-route-categoryId="@category.Id">Изменить</a>
-                                }
-                                @if (canRemoveItems)
-                                {
-                                    <a class="btn btn-danger me-2 ms-2 col" type="submit" asp-action="RemoveCategory" asp-route-categoryId="@category.Id">Удалить</a>
-                                }
-                            </div>
-                        </td>
-                    }
-                </tr>
-            }
+        }
         </tbody>
     </table>
 }

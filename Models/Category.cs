@@ -5,6 +5,14 @@ namespace BooksStore.Models
 {
     public class Category : INameable
     {
+        public Category() : this("", null)
+        {
+        }
+
+        public Category(string name) => Name = name;
+
+        public Category(string name, string description) : this(name) => Description = description;
+
         public int Id { get; set; }
 
         [DisplayName("Жанр")]
@@ -13,14 +21,6 @@ namespace BooksStore.Models
 
         [DisplayName("Описание жанра")]
         public string Description { get; set; }
-
-        public Category() : this("", null)
-        {
-        }
-
-        public Category(string name) => Name = name;
-
-        public Category(string name, string description) : this(name) => Description = description;
 
         public override string ToString() => Name;
     }

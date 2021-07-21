@@ -7,9 +7,9 @@ namespace BooksStore.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<decimal>(
-                name: "Price",
-                table: "Books",
-                type: "decimal(18,2)",
+                "Price",
+                "Books",
+                "decimal(18,2)",
                 nullable: false,
                 defaultValue: 0m);
         }
@@ -17,8 +17,8 @@ namespace BooksStore.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Price",
-                table: "Books");
+                "Price",
+                "Books");
         }
     }
 }

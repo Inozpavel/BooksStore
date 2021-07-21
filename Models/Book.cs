@@ -6,11 +6,17 @@ namespace BooksStore.Models
 {
     public class Book : INameable
     {
-        public int Id { get; set; }
+        public Book()
+        {
+        }
 
-        [Required(ErrorMessage = "У книги должно быть название!")]
-        [DisplayName("Название книги")]
-        public string Name { get; set; }
+        public Book(string name, decimal price)
+        {
+            Name = name;
+            Price = price;
+        }
+
+        public int Id { get; set; }
 
         [DisplayName("Цена товара")]
         public decimal Price { get; set; }
@@ -27,17 +33,11 @@ namespace BooksStore.Models
 
         public List<ProductImage> BookImages { get; set; }
 
+        [Required(ErrorMessage = "У книги должно быть название!")]
+        [DisplayName("Название книги")]
+        public string Name { get; set; }
+
         [DisplayName("Описание книги")]
         public string Description { get; set; }
-
-        public Book()
-        {
-        }
-
-        public Book(string name, decimal price)
-        {
-            Name = name;
-            Price = price;
-        }
     }
 }

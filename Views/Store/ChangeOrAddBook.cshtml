@@ -1,15 +1,15 @@
 ﻿@model BooksStore.ViewModels.BookInputViewModel
 
 <form method="post" enctype="multipart/form-data">
-    <input asp-for="@Model.Book.Id" type="hidden" value="@Model.Book.Id" />
+    <input asp-for="@Model.Book.Id" type="hidden" value="@Model.Book.Id"/>
     <div class="form-group ms-2 me-2">
         <label class="ms-1" asp-for="@Model.Book.Name"></label>
-        <input asp-for="@Model.Book.Name" class="form-control" type="text" value="@Model.Book.Name" autofocus />
+        <input asp-for="@Model.Book.Name" class="form-control" type="text" value="@Model.Book.Name" autofocus/>
         <span class="text-danger small" asp-validation-for="@Model.Book.Name"></span>
     </div>
     <div class="form-group ms-2 me-2">
         <label class="ms-1" asp-for="@Model.Book.Price"></label>
-        <input asp-for="@Model.Book.Price" class="form-control" type="text" value="@Model.Book.Price" autofocus />
+        <input asp-for="@Model.Book.Price" class="form-control" type="text" value="@Model.Book.Price" autofocus/>
         <span class="text-danger small" asp-validation-for="@Model.Book.Price"></span>
     </div>
     <div class="form-group ms-2 me-2">
@@ -19,7 +19,7 @@
             {
                 <option value="" selected>Выберите автора</option>
             }
-            @foreach (BooksStore.Models.Author author in Model.Authors)
+            @foreach (var author in Model.Authors)
             {
                 @if (author.Name != Model.Book.Author.Name)
                 {
@@ -41,7 +41,7 @@
             {
                 <option value="" selected>Выберите жанр</option>
             }
-            @foreach (BooksStore.Models.Category category in Model.Categories)
+            @foreach (var category in Model.Categories)
             {
                 @if (category.Name != Model.Book.Category.Name)
                 {

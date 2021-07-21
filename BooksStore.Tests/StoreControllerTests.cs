@@ -1,10 +1,10 @@
-﻿using BooksStore.Controllers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BooksStore.Controllers;
 using BooksStore.Models;
 using BooksStore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace BooksStore.Tests
@@ -14,15 +14,30 @@ namespace BooksStore.Tests
         [Fact]
         public void CanLoadBooks()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(x => x.Books).Returns(new List<Book>()
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(x => x.Books).Returns(new List<Book>
             {
-                new Book() { Name = "Сказка о рыбаке и рыбке", Category = new ("Сказки"), Author = new ("Пушкин А. С.")},
-                new Book() { Name = "Война и мир", Category = new ("Романы"), Author = new ("Толстой Л. Н.")},
-                new Book() { Name = "Преступление и наказание", Category = new ("Романы"), Author = new ("Достоевский Ф. М.")},
+                new()
+                {
+                    Name = "Сказка о рыбаке и рыбке",
+                    Category = new Category("Сказки"),
+                    Author = new Author("Пушкин А. С.")
+                },
+                new()
+                {
+                    Name = "Война и мир",
+                    Category = new Category("Романы"),
+                    Author = new Author("Толстой Л. Н.")
+                },
+                new()
+                {
+                    Name = "Преступление и наказание",
+                    Category = new Category("Романы"),
+                    Author = new Author("Достоевский Ф. М.")
+                }
             }.AsQueryable());
-            StoreController controller = new StoreController(mock.Object);
-            var result = (controller.AllBooks().Model as IEnumerable<Book>).ToList();
+            var controller = new StoreController(mock.Object);
+            var result = (controller.AllBooks().Model as IEnumerable<Book>)!.ToList();
             Assert.Equal(3, result.Count);
             Assert.Equal("Преступление и наказание", result[2].Name);
             Assert.Equal("Романы", result[2].Category.Name);
@@ -32,15 +47,11 @@ namespace BooksStore.Tests
         [Fact]
         public void CanLoadCategories()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(x => x.Categories).Returns(new List<Category>()
-            {
-                new ("Сказки"),
-                new ("Романы"),
-                new ("Повести"),
-            }.AsQueryable());
-            StoreController controller = new StoreController(mock.Object);
-            var result = (controller.AllCategories().Model as IEnumerable<Category>).ToList();
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(x => x.Categories)
+                .Returns(new List<Category> {new("Сказки"), new("Романы"), new("Повести")}.AsQueryable());
+            var controller = new StoreController(mock.Object);
+            var result = (controller.AllCategories().Model as IEnumerable<Category>)!.ToList();
             Assert.Equal(3, result.Count);
             Assert.Equal("Сказки", result[0].Name);
             Assert.Equal("Романы", result[1].Name);
@@ -51,15 +62,13 @@ namespace BooksStore.Tests
         [Fact]
         public void CanLoadAuthors()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(x => x.Authors).Returns(new List<Author>()
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(x => x.Authors).Returns(new List<Author>
             {
-                new ("Пушкин А. С."),
-                new ("Толстой Л. Н."),
-                new ("Достоевский Ф. М."),
+                new("Пушкин А. С."), new("Толстой Л. Н."), new("Достоевский Ф. М.")
             }.AsQueryable());
-            StoreController controller = new StoreController(mock.Object);
-            var result = (controller.AllAuthors().Model as IEnumerable<Author>).ToList();
+            var controller = new StoreController(mock.Object);
+            var result = (controller.AllAuthors().Model as IEnumerable<Author>)!.ToList();
             Assert.Equal(3, result.Count);
             Assert.Equal("Пушкин А. С.", result[0].Name);
             Assert.Equal("Толстой Л. Н.", result[1].Name);
@@ -69,13 +78,10 @@ namespace BooksStore.Tests
         [Fact]
         public void AddBookWillRedirectToAllBooks()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            StoreController controller = new StoreController(mock.Object);
-            Book book = new Book();
-            BookInputViewModel bookInputView = new BookInputViewModel()
-            {
-                Book = book
-            };
+            var mock = new Mock<IStoreRepository>();
+            var controller = new StoreController(mock.Object);
+            var book = new Book();
+            var bookInputView = new BookInputViewModel {Book = book};
 
             string actualName = (controller.AddBook(bookInputView) as RedirectToActionResult)?.ActionName;
             Assert.Equal("AllBooks", actualName);
@@ -85,9 +91,9 @@ namespace BooksStore.Tests
         [Fact]
         public void AddAuthorWillRedirectToAllAuthors()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            StoreController controller = new StoreController(mock.Object);
-            Author author = new Author();
+            var mock = new Mock<IStoreRepository>();
+            var controller = new StoreController(mock.Object);
+            var author = new Author();
 
             string actualName = (controller.AddAuthor(author) as RedirectToActionResult)?.ActionName;
             Assert.Equal("AllAuthors", actualName);
@@ -97,9 +103,9 @@ namespace BooksStore.Tests
         [Fact]
         public void AddCategoryWillRedirectToAllCategories()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            StoreController controller = new StoreController(mock.Object);
-            Category category = new Category();
+            var mock = new Mock<IStoreRepository>();
+            var controller = new StoreController(mock.Object);
+            var category = new Category();
 
             string actualName = (controller.AddCategory(category) as RedirectToActionResult)?.ActionName;
             Assert.Equal("AllCategories", actualName);
@@ -114,14 +120,13 @@ namespace BooksStore.Tests
         [InlineData("Салтыков-Шедрин М. Е.", null)]
         public void AddAuthorWillShowMessageAuthorAlreadyAdded(string authorName, string errorMessage)
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(x => x.Authors).Returns(new List<Author>()
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(x => x.Authors).Returns(new List<Author>
             {
-                new Author("Пушкин А. С."),
-                new Author("Толстой Л. Н."),
-                new Author("Достоевский Ф. М."),
+                new("Пушкин А. С."), new("Толстой Л. Н."), new("Достоевский Ф. М.")
             }.AsQueryable());
-            mock.Setup(x => x.FindAuthor(authorName)).Returns(mock.Object.Authors.FirstOrDefault(x => x.Name == authorName));
+            mock.Setup(x => x.FindAuthor(authorName))
+                .Returns(mock.Object.Authors.FirstOrDefault(x => x.Name == authorName));
 
             StoreController controller = new(mock.Object);
 
@@ -137,18 +142,15 @@ namespace BooksStore.Tests
         [InlineData("Трагедия", null)]
         public void AddCategoryWillShowMessageCategoryAlreadyAdded(string categoryName, string errorMessage)
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(x => x.Categories).Returns(new List<Category>()
-            {
-                new Category("Сказки"),
-                new Category("Басни"),
-                new Category("Рассказы"),
-            }.AsQueryable());
-            mock.Setup(x => x.FindCategory(categoryName)).Returns(mock.Object.Categories.FirstOrDefault(x => x.Name == categoryName));
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(x => x.Categories)
+                .Returns(new List<Category> {new("Сказки"), new("Басни"), new("Рассказы")}.AsQueryable());
+            mock.Setup(x => x.FindCategory(categoryName))
+                .Returns(mock.Object.Categories.FirstOrDefault(x => x.Name == categoryName));
 
             StoreController controller = new(mock.Object);
 
-            var view = controller.AddCategory(new Category(categoryName));
+            controller.AddCategory(new Category(categoryName));
             Assert.Equal(errorMessage, controller.ViewBag.ErrorMessage);
         }
 
@@ -161,15 +163,13 @@ namespace BooksStore.Tests
         [InlineData(5, false)]
         public void ChangeAuthorWillReturnNotFoundWhenIdNotFound(int id, bool idExists)
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(x => x.Authors).Returns(new List<Author>()
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(x => x.Authors).Returns(new List<Author>
             {
-                new Author("Пушкин А. С.") {Id = 1},
-                new Author("Толстой Л. Н.") {Id = 2},
-                new Author("Достоевский Ф. М.") {Id = 3},
+                new("Пушкин А. С.") {Id = 1}, new("Толстой Л. Н.") {Id = 2}, new("Достоевский Ф. М.") {Id = 3}
             }.AsQueryable());
             mock.Setup(x => x.FindAuthor(id)).Returns(mock.Object.Authors.FirstOrDefault(x => x.Id == id));
-            StoreController controller = new StoreController(mock.Object);
+            var controller = new StoreController(mock.Object);
             var view = controller.ChangeAuthor(id);
 
             if (idExists)
@@ -187,15 +187,13 @@ namespace BooksStore.Tests
         [InlineData(5, false)]
         public void ChangeCategoryWillReturnNotFoundWhenIdNotFound(int id, bool idExists)
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(x => x.Categories).Returns(new List<Category>()
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(x => x.Categories).Returns(new List<Category>
             {
-                new Category("Комедии") {Id = 1},
-                new Category("Повести") {Id = 2},
-                new Category("Рассказы") {Id = 3},
+                new("Комедии") {Id = 1}, new("Повести") {Id = 2}, new("Рассказы") {Id = 3}
             }.AsQueryable());
             mock.Setup(x => x.FindCategory(id)).Returns(mock.Object.Categories.FirstOrDefault(x => x.Id == id));
-            StoreController controller = new StoreController(mock.Object);
+            var controller = new StoreController(mock.Object);
             var view = controller.ChangeCategory(id);
 
             if (idExists)
@@ -213,15 +211,15 @@ namespace BooksStore.Tests
         [InlineData(5, false)]
         public void ChangeBookWillReturnNotFoundWhenIdNotFound(int id, bool idExists)
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(x => x.Books).Returns(new List<Book>()
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(x => x.Books).Returns(new List<Book>
             {
-                new Book() {Id = 1, Category = new("Комедии"), Author = new("Салтыков-Шедрин М. Е.")},
-                new Book() {Id = 2, Category = new("Повести"), Author = new("Лесков Н. С.")},
-                new Book() {Id = 3, Category = new("Рассказы"), Author = new("Толстой Л. Н.")},
+                new() {Id = 1, Category = new Category("Комедии"), Author = new Author("Салтыков-Шедрин М. Е.")},
+                new() {Id = 2, Category = new Category("Повести"), Author = new Author("Лесков Н. С.")},
+                new() {Id = 3, Category = new Category("Рассказы"), Author = new Author("Толстой Л. Н.")}
             }.AsQueryable());
             mock.Setup(x => x.FindBook(id)).Returns(mock.Object.Books.FirstOrDefault(x => x.Id == id));
-            StoreController controller = new StoreController(mock.Object);
+            var controller = new StoreController(mock.Object);
             var view = controller.ChangeBook(id);
 
             if (idExists)
@@ -233,47 +231,45 @@ namespace BooksStore.Tests
         [Fact]
         public void ChangeBookReturnsViewResultWithUserModel()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            StoreController controller = new StoreController(mock.Object);
+            var mock = new Mock<IStoreRepository>();
+            var controller = new StoreController(mock.Object);
             controller.ModelState.AddModelError("Name", "Название книги не может быть пустым!");
-            Book book = new Book();
-            BookInputViewModel model = new BookInputViewModel()
+            var book = new Book();
+            var model = new BookInputViewModel
             {
-                Categories = new List<Category>(),
-                Authors = new List<Author>(),
-                Book = book
+                Categories = new List<Category>(), Authors = new List<Author>(), Book = book
             };
             var result = controller.ChangeBook(model) as ViewResult;
             Assert.IsType<ViewResult>(result);
-            Assert.Equal(book, (result?.Model as BookInputViewModel)?.Book);
+            Assert.Equal(book, (result.Model as BookInputViewModel)?.Book);
         }
 
         [Fact]
         public void ChangeCategoryReturnsViewResultWithUserModel()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            StoreController controller = new StoreController(mock.Object);
-            Category categoty = new Category();
+            var mock = new Mock<IStoreRepository>();
+            var controller = new StoreController(mock.Object);
+            var category = new Category();
             controller.ModelState.AddModelError("Name", "Название не может быть пустым!");
 
-            var result = controller.ChangeCategory(categoty) as ViewResult;
+            var result = controller.ChangeCategory(category) as ViewResult;
 
             Assert.IsType<ViewResult>(result);
-            Assert.Equal(categoty, result?.Model);
+            Assert.Equal(category, result.Model);
         }
 
         [Fact]
         public void AddAuthorReturnsViewResultWithUserModel()
         {
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            StoreController controller = new StoreController(mock.Object);
-            Author author = new Author();
+            var mock = new Mock<IStoreRepository>();
+            var controller = new StoreController(mock.Object);
+            var author = new Author();
             controller.ModelState.AddModelError("Name", "Имя не может быть пустым!");
 
             var result = controller.ChangeAuthor(author) as ViewResult;
 
             Assert.IsType<ViewResult>(result);
-            Assert.Equal(author, result?.Model);
+            Assert.Equal(author, result.Model);
         }
     }
 }

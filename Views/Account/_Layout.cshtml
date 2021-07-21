@@ -1,25 +1,25 @@
 ﻿<!DOCTYPE html>
 
-<html>
+<html lang="ru">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/form-sign_in.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/form-registration.css" asp-append-version="true" />
-    <link rel="icon" type="image/x-icon" href="~/images/favicon.png" />
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/form-sign_in.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/form-registration.css" asp-append-version="true"/>
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.png"/>
     @if (Context.Request.Cookies["Theme"] == "Dark")
     {
-        <link rel="stylesheet" href="~/css/user-data-form-dark.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/user-data-form-dark.css" asp-append-version="true"/>
     }
     else
     {
-        <link rel="stylesheet" href="~/css/user-data-form-light.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/user-data-form-light.css" asp-append-version="true"/>
     }
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <div class="center-element">
-        @RenderBody()
-    </div>
+<div class="center-element">
+    @RenderBody()
+</div>
 </body>
 </html>

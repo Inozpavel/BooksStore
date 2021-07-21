@@ -1,6 +1,6 @@
-﻿using BooksStore.Models;
+﻿using System.Collections.Generic;
+using BooksStore.Models;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 
 namespace BooksStore.ViewModels
 {

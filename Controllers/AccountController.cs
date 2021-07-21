@@ -1,15 +1,14 @@
-﻿using BooksStore.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BooksStore.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BooksStore.Controllers
 {
@@ -29,7 +28,7 @@ namespace BooksStore.Controllers
         public async Task<IActionResult> Login(UserLogin userLogin, string returnUrl = null)
         {
             userLogin.Password = HashStringWithSHA256(userLogin.Password);
-            User user = _repository.FindUser(userLogin.Email, userLogin.Password);
+            var user = _repository.FindUser(userLogin.Email, userLogin.Password);
             if (user == null)
             {
                 ModelState.AddModelError("", "Неправильный логин или пароль!");
@@ -39,8 +38,7 @@ namespace BooksStore.Controllers
             await Authenticate(user);
             if (Url.IsLocalUrl(returnUrl))
                 return Redirect(returnUrl);
-            else
-                return RedirectToActionPermanent("Index", "Store");
+            return RedirectToActionPermanent("Index", "Store");
         }
 
         [HttpGet]
@@ -79,19 +77,19 @@ namespace BooksStore.Controllers
         }
 
         [HttpGet]
-        public ViewResult Cart() => View(_repository.FindCartItems(_repository.FindUser(User.Identity.Name).Id));
+        public ViewResult Cart() => View(_repository.FindCartItems(_repository.FindUser(User.Identity?.Name).Id));
 
         [HttpGet]
         public ViewResult Profile()
         {
-            User user = _repository.FindUser(HttpContext.User.Identity.Name);
+            var user = _repository.FindUser(HttpContext.User.Identity?.Name);
             return View(user);
         }
 
         [HttpPost]
         public async Task<ActionResult> Profile(User user)
         {
-            User userToUpdate = _repository.FindUser(HttpContext.User.Identity.Name);
+            var userToUpdate = _repository.FindUser(HttpContext.User.Identity?.Name);
             if (user == null)
                 return NotFound();
 
@@ -102,6 +100,8 @@ namespace BooksStore.Controllers
             if (TryValidateModel(user) == false)
                 return View(user);
 
+            if (userToUpdate == null)
+                return View(user);
             userToUpdate.Name = user.Name;
             userToUpdate.SecondName = user.SecondName;
             userToUpdate.Email = user.Email;
@@ -111,34 +111,39 @@ namespace BooksStore.Controllers
             TempData["UpdateMessage"] = "Информация была успешно обновлена!";
             if (HttpContext != null)
                 await Authenticate(userToUpdate);
+
             return View(user);
         }
 
         [HttpGet]
         public IActionResult ChangeTheme(string themeName, string returnUrl = null, string parameters = null)
         {
-            if (themeName == "Light")
-                Response.Cookies.Append("Theme", "Light");
-            else if (themeName == "Dark")
-                Response.Cookies.Append("Theme", "Dark");
-            else
-                return NotFound();
+            switch (themeName)
+            {
+                case "Light":
+                    Response.Cookies.Append("Theme", "Light");
+                    break;
+                case "Dark":
+                    Response.Cookies.Append("Theme", "Dark");
+                    break;
+                default:
+                    return NotFound();
+            }
 
-            if (string.IsNullOrWhiteSpace(returnUrl) == false)
-                return Redirect(returnUrl + parameters ?? "");
-
-            return Redirect("/Store/Index");
+            return string.IsNullOrWhiteSpace(returnUrl) == false
+                ? Redirect(returnUrl + parameters)
+                : Redirect("/Store/Index");
         }
 
         private async Task Authenticate(User user)
         {
-            List<Claim> claims = new List<Claim>()
+            var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name),
+                new(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
             };
 
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "ApplicationCookie");
+            var claimsIdentity = new ClaimsIdentity(claims, "ApplicationCookie");
             await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(claimsIdentity));
         }
 

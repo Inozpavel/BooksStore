@@ -7,46 +7,46 @@ namespace BooksStore.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "ProductImageId",
-                table: "Books",
-                type: "int",
+                "ProductImageId",
+                "Books",
+                "int",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "Images",
-                columns: table => new
+                "Images",
+                table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>("int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BookId = table.Column<int>(type: "int", nullable: false),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    BookId = table.Column<int>("int", nullable: false),
+                    Image = table.Column<byte[]>("varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "Books",
-                        principalColumn: "Id",
+                        "FK_Images_Books_BookId",
+                        x => x.BookId,
+                        "Books",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_BookId",
-                table: "Images",
-                column: "BookId");
+                "IX_Images_BookId",
+                "Images",
+                "BookId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Images");
+                "Images");
 
             migrationBuilder.DropColumn(
-                name: "ProductImageId",
-                table: "Books");
+                "ProductImageId",
+                "Books");
         }
     }
 }

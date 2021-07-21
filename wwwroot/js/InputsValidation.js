@@ -1,6 +1,6 @@
 ﻿const form = document.querySelector("form")
 const inputs = form.querySelectorAll("input.form-control");
-const passwordInputs = document.querySelectorAll(`input[type = "password"`);
+const passwordInputs = document.querySelectorAll(`input[type = "password"]`);
 
 form.addEventListener("submit", (event) => {
     if (checkInputs() === false)
@@ -14,7 +14,7 @@ function checkInputs() {
             updateElementClasses(input, "is-invalid", "is-valid", "Значение не может быть пустым!")
             validState = false;
         }
-        else if (input.type != "password") {
+        else if (input.type !== "password") {
             updateElementClasses(input, "is-valid", "is-invalid", "")
         }
     }
@@ -50,7 +50,7 @@ function checkPasswordsInputs() {
 function checkPasswords() {
     const password = passwordInputs[0].value;
     for (let i = 1; i < passwordInputs.length; i++) {
-        if (passwordInputs[i].value != password) {
+        if (passwordInputs[i].value !== password) {
             return false;
         }
     }

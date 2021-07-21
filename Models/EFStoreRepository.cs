@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace BooksStore.Models
 {
-    public class EFStoreRepository : IStoreRepository
+    public class EfStoreRepository : IStoreRepository
     {
         private readonly StoreContext _context;
+
+        public EfStoreRepository(StoreContext context) => _context = context;
 
         public IQueryable<Book> Books => _context.Books.Include(x => x.Author).Include(x => x.Category);
 
@@ -17,7 +19,8 @@ namespace BooksStore.Models
 
         public IEnumerable<Author> AuthorsOrderedByName => _context.Authors.OrderBy(author => author.Name).ToList();
 
-        public IEnumerable<Category> CategoriesOrderedByName => _context.Categories.OrderBy(category => category.Name).ToList();
+        public IEnumerable<Category> CategoriesOrderedByName =>
+            _context.Categories.OrderBy(category => category.Name).ToList();
 
         public IQueryable<User> Users => _context.Users;
 
@@ -27,27 +30,36 @@ namespace BooksStore.Models
 
         public IQueryable<CartItem> CartItems => _context.CartsItems;
 
-        public EFStoreRepository(StoreContext context) => _context = context;
+        public bool CheckEmailAlreadyExists(string email) => _context.Users.Any(x => x.Email == email);
 
         #region Find
 
         public User FindUser(int userId) => Users.Include(x => x.Role).FirstOrDefault(user => user.Id == userId);
 
-        public User FindUser(string email, string password) => Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email && user.Password == password);
+        public User FindUser(string email, string password) =>
+            Users.Include(x => x.Role).FirstOrDefault(user => user.Email == email && user.Password == password);
 
-        public User FindUser(string email) => Users.Include(x => x.Role).Include(x => x.CartsItems).FirstOrDefault(user => user.Email == email);
+        public User FindUser(string email) =>
+            Users.Include(x => x.Role).Include(x => x.CartsItems).FirstOrDefault(user => user.Email == email);
 
         public Book FindBook(int bookId) => Books.Include(x => x.BookImages).FirstOrDefault(book => book.Id == bookId);
 
-        public IEnumerable<Book> FindBooks(string searchOption) => Books.Include(x => x.BookImages).Where(book => book.Name.Contains(searchOption) || book.Author.Name.Contains(searchOption) || book.Category.Name.Contains(searchOption)).ToList();
+        public IEnumerable<Book> FindBooks(string searchOption)
+        {
+            return Books.Include(x => x.BookImages).Where(book =>
+                book.Name.Contains(searchOption) || book.Author.Name.Contains(searchOption) ||
+                book.Category.Name.Contains(searchOption)).ToList();
+        }
 
         public Author FindAuthor(int authorId) => Authors.FirstOrDefault(author => author.Id == authorId);
 
         public Author FindAuthor(string authorName) => Authors.FirstOrDefault(author => author.Name == authorName);
 
-        public Category FindCategory(int categoryId) => Categories.FirstOrDefault(category => category.Id == categoryId);
+        public Category FindCategory(int categoryId) =>
+            Categories.FirstOrDefault(category => category.Id == categoryId);
 
-        public Category FindCategory(string categoryName) => Categories.FirstOrDefault(category => category.Name == categoryName);
+        public Category FindCategory(string categoryName) =>
+            Categories.FirstOrDefault(category => category.Name == categoryName);
 
         public Role FindRole(string roleName) => Roles.FirstOrDefault(role => role.Name == roleName);
 
@@ -55,9 +67,11 @@ namespace BooksStore.Models
 
         public List<ProductImage> FindImages(int bookId) => Images.Where(x => x.BookId == bookId).ToList();
 
-        public CartItem FindCartItem(int userId, int bookId) => CartItems.FirstOrDefault(item => item.UserId == userId && item.BookId == bookId);
+        public CartItem FindCartItem(int userId, int bookId) =>
+            CartItems.FirstOrDefault(item => item.UserId == userId && item.BookId == bookId);
 
-        public IEnumerable<CartItem> FindCartItems(int userId) => CartItems.Include(x => x.Book).Where(item => item.UserId == userId).ToList();
+        public IEnumerable<CartItem> FindCartItems(int userId) =>
+            CartItems.Include(x => x.Book).Where(item => item.UserId == userId).ToList();
 
         #endregion
 
@@ -71,7 +85,7 @@ namespace BooksStore.Models
             _context.SaveChanges();
         }
 
-        public void AddBooksRange(params Book[] books) => books.ToList().ForEach(book => AddBook(book));
+        public void AddBooksRange(params Book[] books) => books.ToList().ForEach(AddBook);
 
         public void AddAuthor(Author author)
         {
@@ -79,7 +93,7 @@ namespace BooksStore.Models
             _context.SaveChanges();
         }
 
-        public void AddAuthorsRange(params Author[] authors) => authors.ToList().ForEach(author => AddAuthor(author));
+        public void AddAuthorsRange(params Author[] authors) => authors.ToList().ForEach(AddAuthor);
 
         public void AddCategory(Category category)
         {
@@ -87,7 +101,7 @@ namespace BooksStore.Models
             _context.SaveChanges();
         }
 
-        public void AddCategoriesRange(params Category[] categories) => categories.ToList().ForEach(category => AddCategory(category));
+        public void AddCategoriesRange(params Category[] categories) => categories.ToList().ForEach(AddCategory);
 
         public void AddUser(User user)
         {
@@ -174,7 +188,7 @@ namespace BooksStore.Models
 
         public void RemoveCartItems(int userId)
         {
-            List<CartItem> items = _context.CartsItems.ToList();
+            var items = _context.CartsItems.ToList();
             foreach (var item in items)
                 _context.CartsItems.Remove(item);
             _context.SaveChanges();
@@ -192,7 +206,5 @@ namespace BooksStore.Models
         }
 
         #endregion
-
-        public bool CheckEmailAlreadyExists(string email) => _context.Users.Any(x => x.Email == email);
     }
 }

@@ -23,6 +23,8 @@ namespace BooksStore.Models
 
         public IQueryable<CartItem> CartItems { get; }
 
+        bool CheckEmailAlreadyExists(string email);
+
         #region Find
 
         User FindUser(int userId);
@@ -106,7 +108,5 @@ namespace BooksStore.Models
         void UpdateCartItem(CartItem cartItem);
 
         #endregion
-
-        bool CheckEmailAlreadyExists(string email);
     }
 }

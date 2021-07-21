@@ -1,33 +1,33 @@
 ﻿@model BooksStore.Models.UserRegistration
-@{ 
+@{
     ViewBag.Title = "Регистрация";
 }
 <form class="mt-5 form-registration" method="post">
     <div class="row align-items-center">
         <div class="col me-1 ms-5">
             <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" autofocus type="text" />
+            <input asp-for="Name" class="form-control" autofocus type="text"/>
             <span class="text-danger small" asp-validation-for="Name"></span>
         </div>
         <div class="col me-5 ms-1">
             <label asp-for="SecondName"></label>
-            <input asp-for="SecondName" class="form-control" autofocus type="text" />
+            <input asp-for="SecondName" class="form-control" autofocus type="text"/>
             <span class="text-danger small" asp-validation-for="SecondName"></span>
         </div>
     </div>
     <div class="form-group mt-2">
         <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" type="email" />
+        <input asp-for="Email" class="form-control" type="email"/>
         <span class="text-danger small" asp-validation-for="Email"></span>
     </div>
     <div class="form-group mt-2">
         <label asp-for="Phone"></label>
-        <input asp-for="Phone" class="form-control" type="tel" />
+        <input asp-for="Phone" class="form-control" type="tel"/>
         <span class="text-danger small" asp-validation-for="Phone"></span>
     </div>
     <div class="form-group mt-2">
         <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" type="password" />
+        <input asp-for="Password" class="form-control" type="password"/>
         <span class="text-danger small" asp-validation-for="Password"></span>
     </div>
     <div class="form-group mt-2">
@@ -40,4 +40,3 @@
     </div>
 </form>
 <script src="~/js/InputsValidation.js" asp-append-version="true"></script>
-    
